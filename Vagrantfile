@@ -27,6 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.box_url doesn't need to be specified.
   config.vm.box = 'ubuntu/trusty64'
 
+  config.ssh.forward_agent = true
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -48,13 +49,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider :virtualbox do |vb|
+  config.vm.provider :virtualbox do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
@@ -76,15 +77,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.json = {
-      mysql: {
-        server_root_password: 'rootpass',
-        server_debian_password: 'debpass',
-        server_repl_password: 'replpass'
-      }
+      dotfiles: {username: 'vagrant'}
     }
 
-    chef.run_list = [
-      'recipe[knowledge-base::default]'
-    ]
+    chef.add_recipe 'valentin-dotfiles'
+    chef.add_recipe 'knowledge-base'
   end
 end
