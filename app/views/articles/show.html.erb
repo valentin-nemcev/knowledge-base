@@ -1,14 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</p>
+<h1> <%= @article.title %></h1>
 
-<p>
-  <strong>Body:</strong>
-  <%= @article.body %>
-</p>
+<%= markdown @article.body %>
 
 <%= link_to 'Edit', edit_article_path(@article) %> |
 <%= link_to 'Back', articles_path %>
