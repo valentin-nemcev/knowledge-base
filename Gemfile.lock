@@ -126,6 +126,9 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     octokit (3.8.0)
       sawyer (~> 0.6.0, >= 0.5.3)
+    passenger (5.0.23)
+      rack
+      rake (>= 0.8.1)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -230,6 +233,7 @@ DEPENDENCIES
   byebug
   jbuilder (~> 2.0)
   jquery-rails
+  passenger
   pg (~> 0.15)
   rails (= 4.2.5)
   sass-rails (~> 5.0)
