@@ -1,6 +1,6 @@
 <h1>Editing Article</h1>
 
-<%= form_for(@article) do |f| %>
+<%= form_for(@article, html: {class: 'text'}) do |f| %>
   <% if @article.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>

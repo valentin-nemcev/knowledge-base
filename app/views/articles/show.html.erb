@@ -5,7 +5,8 @@
 <!--p id="notice"><%= notice %></p-->
 
 <%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-secondary' %>
-<h1> <%= @article.title %></h1>
+<div class="text">
+  <h1> <%= @article.title %></h1>
 
-<%= markdown @article.body %>
-
+  <%= markdown @article.body %>
+</div>
