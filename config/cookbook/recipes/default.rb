@@ -1,3 +1,6 @@
+node.set['tz'] = 'Europe/Moscow'
+include_recipe 'timezone-ii'
+
 
 include_recipe 'ruby_build'
 include_recipe 'ruby_rbenv::system_install'
