@@ -17,10 +17,12 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
+    render :form
   end
 
   # GET /articles/1/edit
   def edit
+    render :form
   end
 
   # POST /articles
@@ -33,7 +35,7 @@ class ArticlesController < ApplicationController
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
-        format.html { render :new }
+        format.html { render :form }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
@@ -47,7 +49,7 @@ class ArticlesController < ApplicationController
         format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
-        format.html { render :edit }
+        format.html { render :form }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
