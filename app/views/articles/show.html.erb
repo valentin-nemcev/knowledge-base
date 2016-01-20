@@ -1,10 +1,23 @@
-<div>
+<div class="form-group">
   <%= link_to '← Back', articles_path %>
 </div>
 
 <!--p id="notice"><%= notice %></p-->
+<div class="form-group">
+  <%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-secondary' %>
+</div>
 
-<%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-secondary' %>
+<div class="form-group">
+  <% if @article.ever_reviewed? %>
+    Last reviewed <%= time_ago_in_words(@article.last_reviewed_at) %> ago,
+    in total <%= pluralize(@article.review_count, 'review') %> over
+    <%= time_ago_in_words(@article.first_reviewed_at) %>.
+  <% else %>
+    Never reviewed
+  <% end %>
+  <%= button_to 'Mark as reviewed', mark_as_reviewed_article_path(@article), class: 'btn btn-secondary btn-sm' %>
+</div>
+
 <div class="text">
   <h1> <%= @article.title %></h1>
 

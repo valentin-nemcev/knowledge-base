@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   include MarkdownHelper
 
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_article, only: [:show, :edit, :update, :destroy, :mark_as_reviewed]
 
   # GET /articles
   # GET /articles.json
@@ -63,6 +63,11 @@ class ArticlesController < ApplicationController
       format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def mark_as_reviewed
+    @article.add_review(Time.now)
+    render :show
   end
 
   private
