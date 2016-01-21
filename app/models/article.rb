@@ -1,5 +1,19 @@
 class Article < ActiveRecord::Base
-  has_many :reviews,  -> { order(:reviewed_at) }, class_name: "ArticleReview"
+
+  has_many :revisions, class_name: 'ArticleRevision', dependent: :destroy
+  belongs_to :current_revision, class_name: 'ArticleRevision'
+
+  def title
+    current_revision.try!(:title)
+  end
+
+  def body
+    current_revision.try!(:body)
+  end
+
+
+  has_many :reviews,  -> { order(:reviewed_at) },
+    class_name: 'ArticleReview', dependent: :destroy
 
   def ever_reviewed?
     self.reviews.present?

@@ -28,3 +28,27 @@
     overflow: visible;
   }
 }
+
+
+.text-uppercase {
+  letter-spacing: 0.1em;
+}
+
+
+section.ui {
+  @extend .form-group;
+
+  h1, h2 {
+    @extend .text-uppercase;
+    @extend .text-muted;
+  }
+
+  h1 {
+    font-size: $font-size-base;
+  }
+
+  h2 {
+    font-size: $font-size-sm;
+  }
+}
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118151408) do
+ActiveRecord::Schema.define(version: 20160121112310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,12 +23,25 @@ ActiveRecord::Schema.define(version: 20160118151408) do
 
   add_index "article_reviews", ["article_id"], name: "index_article_reviews_on_article_id", using: :btree
 
-  create_table "articles", force: :cascade do |t|
-    t.string   "title"
-    t.text     "body"
+  create_table "article_revisions", force: :cascade do |t|
+    t.integer  "article_id"
+    t.string   "title",      null: false
+    t.text     "body",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_index "article_revisions", ["article_id"], name: "index_article_revisions_on_article_id", using: :btree
+
+  create_table "articles", force: :cascade do |t|
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "current_revision_id"
+  end
+
+  add_index "articles", ["current_revision_id"], name: "index_articles_on_current_revision_id", using: :btree
+
   add_foreign_key "article_reviews", "articles"
+  add_foreign_key "article_revisions", "articles"
+  add_foreign_key "articles", "article_revisions", column: "current_revision_id"
 end
