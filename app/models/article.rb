@@ -1,14 +1,30 @@
 class Article < ActiveRecord::Base
 
   has_many :revisions, class_name: 'ArticleRevision', dependent: :destroy
-  belongs_to :current_revision, class_name: 'ArticleRevision'
+  belongs_to :current_revision, class_name: 'ArticleRevision', autosave: true
+
+  def ensure_new_revision
+    if current_revision.nil? || !current_revision.new_record?
+      build_current_revision(article: self)
+    end
+  end
 
   def title
     current_revision.try!(:title)
   end
 
+  def title=(title)
+    ensure_new_revision
+    current_revision.title = title
+  end
+
   def body
     current_revision.try!(:body)
+  end
+
+  def body=(body)
+    ensure_new_revision
+    current_revision.body = body
   end
 
 
