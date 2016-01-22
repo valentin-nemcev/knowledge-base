@@ -2,6 +2,11 @@ class Article < ActiveRecord::Base
 
   has_many :revisions, class_name: 'ArticleRevision', dependent: :destroy
   belongs_to :current_revision, class_name: 'ArticleRevision', autosave: true
+  before_destroy :unset_current_revision, prepend: true
+
+  def unset_current_revision
+    update_column(:current_revision_id, nil)
+  end
 
   def ensure_new_revision
     if current_revision.nil? || !current_revision.new_record?

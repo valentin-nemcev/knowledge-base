@@ -20,8 +20,13 @@
   <fieldset class="form-group">
     <%= f.text_area :body, class: 'form-control', rows: 30 %>
   </fieldset>
-  <fieldset class="form-group">
+  <fieldset class="form-group clearfix">
     <%= f.submit class: 'btn btn-primary' %>
     <%= link_to 'Back', @article.new_record? ? articles_path : @article, class: 'btn btn-link' %>
+    <% unless @article.new_record? %>
+      <%= button_to 'Delete article', article_path(@article),
+        method: :delete, class: 'btn btn-danger-outline pull-xs-right',
+        data: {confirm: 'Are you sure?' } %>
+    <% end %>
   </fieldset>
 <% end %>
