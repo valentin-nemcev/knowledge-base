@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   resources :articles do
     member do
       post 'mark_as_reviewed'
+      put 'autosave'
+      match via: [:patch, :put],
+        constraints: lambda {|req| req.params.key?(:autosave) },
+        action: :autosave
     end
   end
 

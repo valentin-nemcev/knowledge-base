@@ -2,7 +2,7 @@
   <%= link_to '← Back', articles_path %>
 </nav>
 
-<section class="ui">
+<section class="ui clearfix">
 <!--p id="notice"><%= notice %></p-->
   <h1>Revisions</h1>
   <ol>
@@ -11,6 +11,10 @@
     <% end %>
   </ol>
   <%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-secondary' %>
+  <%= button_to 'Delete article', article_path(@article),
+    method: :delete,
+    class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+    data: {confirm: 'Are you sure?' } %>
 </section>
 
 <section class="ui">

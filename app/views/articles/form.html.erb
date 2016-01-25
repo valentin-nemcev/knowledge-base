@@ -15,18 +15,20 @@
 
   <fieldset class="form-group">
     <%= f.label :title, class: 'sr-only' %>
-    <%= f.text_field :title, class: 'form-control form-control-lg', placeholder: 'Title' %>
+    <%= f.text_field :title, placeholder: 'Title',
+      class: 'form-control form-control-lg'
+    %>
   </fieldset>
   <fieldset class="form-group">
     <%= f.text_area :body, class: 'form-control', rows: 30 %>
   </fieldset>
   <fieldset class="form-group clearfix">
     <%= f.submit class: 'btn btn-primary' %>
-    <%= link_to 'Back', @article.new_record? ? articles_path : @article, class: 'btn btn-link' %>
     <% unless @article.new_record? %>
-      <%= button_to 'Delete article', article_path(@article),
-        method: :delete, class: 'btn btn-danger-outline pull-xs-right',
-        data: {confirm: 'Are you sure?' } %>
+      <%= f.submit 'Autosave', name: 'autosave', class: 'btn btn-primary' %>
     <% end %>
+    <%= link_to 'Back', @article.new_record? ? articles_path : @article,
+      class: 'btn btn-link'
+    %>
   </fieldset>
 <% end %>

@@ -8,10 +8,15 @@ class Article < ActiveRecord::Base
     update_column(:current_revision_id, nil)
   end
 
-  def ensure_new_revision
+  def ensure_new_revision(autosave: false)
     if current_revision.nil? || !current_revision.new_record?
       build_current_revision(article: self)
     end
+  end
+
+  def autosave(*args)
+    ensure_new_revision
+    update(*args)
   end
 
   def title

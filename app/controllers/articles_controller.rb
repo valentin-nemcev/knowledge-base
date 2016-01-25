@@ -1,7 +1,8 @@
 class ArticlesController < ApplicationController
   include MarkdownHelper
 
-  before_action :set_article, only: [:show, :edit, :update, :destroy, :mark_as_reviewed]
+  before_action :set_article,
+    only: [:show, :edit, :update, :autosave, :destroy, :mark_as_reviewed]
 
   # GET /articles
   # GET /articles.json
@@ -47,6 +48,18 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.update(article_params)
         format.html { redirect_to @article, flash: {success: 'Article was successfully updated.' }}
+        format.json { render :show, status: :ok, location: @article }
+      else
+        format.html { render :form }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def autosave
+    respond_to do |format|
+      if @article.autosave(article_params)
+        format.html { render :form }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :form }
