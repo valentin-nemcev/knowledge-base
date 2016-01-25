@@ -2,35 +2,28 @@
   <%= link_to '← Back', articles_path %>
 </nav>
 
-<section class="ui clearfix">
-<!--p id="notice"><%= notice %></p-->
-  <h1>Revisions</h1>
-  <ol>
-    <% @article.revisions.each do |revision| %>
-      <li><%= time_tag revision.updated_at %></li>
-    <% end %>
-  </ol>
-  <%= link_to 'Edit', edit_article_path(@article), class: 'btn btn-secondary' %>
-  <%= button_to 'Delete article', article_path(@article),
-    method: :delete,
-    class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
-    data: {confirm: 'Are you sure?' } %>
-</section>
+<div class="row">
+  <div class="col-md-5 col-md-push-7">
+    <%= render "revisions" %>
+    <section class="ui">
+      <h1>Reviews</h1>
+      <% if @article.ever_reviewed? %>
+        Last reviewed <%= time_ago_in_words(@article.last_reviewed_at) %> ago,
+        in total <%= pluralize(@article.review_count, 'review') %> over
+        <%= time_ago_in_words(@article.first_reviewed_at) %>.
+      <% else %>
+        Never reviewed
+      <% end %>
+      <%= button_to 'Mark as reviewed', mark_as_reviewed_article_path(@article),
+        class: 'btn btn-secondary btn-sm' %>
+    </section>
+  </div>
+  <div class="col-md-7 col-md-pull-5">
 
-<section class="ui">
-  <h1>Reviews</h1>
-  <% if @article.ever_reviewed? %>
-    Last reviewed <%= time_ago_in_words(@article.last_reviewed_at) %> ago,
-    in total <%= pluralize(@article.review_count, 'review') %> over
-    <%= time_ago_in_words(@article.first_reviewed_at) %>.
-  <% else %>
-    Never reviewed
-  <% end %>
-  <%= button_to 'Mark as reviewed', mark_as_reviewed_article_path(@article), class: 'btn btn-secondary btn-sm' %>
-</section>
+    <div class="text">
+      <h1> <%= @article.title %></h1>
 
-<div class="text">
-  <h1> <%= @article.title %></h1>
-
-  <%= markdown @article.body %>
+      <%= markdown @article.body %>
+    </div>
+  </div>
 </div>

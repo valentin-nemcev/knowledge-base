@@ -59,7 +59,7 @@ class ArticlesController < ApplicationController
   def autosave
     respond_to do |format|
       if @article.autosave(article_params)
-        format.html { render :form }
+        format.html { redirect_to [:edit, @article]}
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :form }
