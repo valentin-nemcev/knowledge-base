@@ -3,12 +3,17 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   resources :articles do
+    collection do
+      post constraints: lambda { |req| req.params.key?(:autosave) },
+          action: :create_autosave
+    end
+
     member do
       post 'mark_as_reviewed'
-      put 'autosave'
+      patch 'autosave', action: :update_autosave
       match via: [:patch, :put],
-        constraints: lambda {|req| req.params.key?(:autosave) },
-        action: :autosave
+        constraints: lambda { |req| req.params.key?(:autosave) },
+        action: :update_autosave
     end
   end
 
