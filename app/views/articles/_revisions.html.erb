@@ -2,10 +2,15 @@
   <h1>Revisions</h1>
   <ol>
     <% @article.revisions.each do |revision| %>
-      <li><%= time_tag revision.updated_at %></li>
+      <li>
+        <%= time_tag revision.updated_at %>
+        <% if revision.autosave? %>
+          <span class="label label-default">autosave</span>
+        <% end %>
+      </li>
     <% end %>
   </ol>
-  <% unless current_page?(edit_article_path(@article)) %>
+  <% unless @article.new_record? || current_page?(edit_article_path(@article)) %>
     <%= link_to 'Edit', edit_article_path(@article),
       class: 'btn btn-secondary' %>
     <%= button_to 'Delete article', article_path(@article),

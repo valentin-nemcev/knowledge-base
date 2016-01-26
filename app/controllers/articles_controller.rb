@@ -29,10 +29,10 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(article_params)
+    @article = Article.new()
 
     respond_to do |format|
-      if @article.save
+      if @article.autosaving(false).update(article_params)
         format.html { redirect_to @article, flash: {success: 'Article was successfully created.' }}
         format.json { render :show, status: :created, location: @article }
       else
@@ -46,7 +46,7 @@ class ArticlesController < ApplicationController
   # PATCH/PUT /articles/1.json
   def update
     respond_to do |format|
-      if @article.update(article_params)
+      if @article.autosaving(false).update(article_params)
         format.html { redirect_to @article, flash: {success: 'Article was successfully updated.' }}
         format.json { render :show, status: :ok, location: @article }
       else
@@ -58,7 +58,7 @@ class ArticlesController < ApplicationController
 
   def autosave
     respond_to do |format|
-      if @article.autosave(article_params)
+      if @article.autosaving(true).update(article_params)
         format.html { redirect_to [:edit, @article]}
         format.json { render :show, status: :ok, location: @article }
       else

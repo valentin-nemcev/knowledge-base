@@ -8,15 +8,16 @@ class Article < ActiveRecord::Base
     update_column(:current_revision_id, nil)
   end
 
-  def ensure_new_revision(autosave: false)
-    if current_revision.nil? || !current_revision.new_record?
-      build_current_revision(article: self)
+  def autosaving(autosave)
+    if current_revision.nil?
+      build_current_revision(article: self, autosave: autosave)
+    elsif current_revision.persisted?
+      unless current_revision.autosave?
+        build_current_revision(article: self)
+      end
+      current_revision.autosave = autosave
     end
-  end
-
-  def autosave(*args)
-    ensure_new_revision
-    update(*args)
+    self
   end
 
   def title
@@ -24,7 +25,6 @@ class Article < ActiveRecord::Base
   end
 
   def title=(title)
-    ensure_new_revision
     current_revision.title = title
   end
 
@@ -33,7 +33,6 @@ class Article < ActiveRecord::Base
   end
 
   def body=(body)
-    ensure_new_revision
     current_revision.body = body
   end
 
