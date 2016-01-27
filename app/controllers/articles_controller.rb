@@ -5,40 +5,33 @@ class ArticlesController < ApplicationController
     only: [:show, :edit, :update, :update_autosave,
            :destroy, :mark_as_reviewed]
 
-  # GET /articles
-  # GET /articles.json
   def index
     @articles = Article.all
   end
 
-  # GET /articles/1
-  # GET /articles/1.json
   def show
   end
 
-  # GET /articles/new
   def new
     @article = Article.new
     render :form
   end
 
-  # GET /articles/1/edit
   def edit
     render :form
   end
 
-  # POST /articles
-  # POST /articles.json
   def create
     @article = Article.new()
 
     respond_to do |format|
       if @article.autosaving(false).update(article_params)
-        format.html { redirect_to @article, flash: {success: 'Article was successfully created.' }}
+        format.html { redirect_to @article, notice: :create_success }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :form }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors,
+                      status: :unprocessable_entity }
       end
     end
   end
@@ -52,21 +45,21 @@ class ArticlesController < ApplicationController
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :form }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors,
+                      status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /articles/1
-  # PATCH/PUT /articles/1.json
   def update
     respond_to do |format|
       if @article.autosaving(false).update(article_params)
-        format.html { redirect_to @article, flash: {success: 'Article was successfully updated.' }}
+        format.html { redirect_to @article, notice: :update_success }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :form }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors,
+                      status: :unprocessable_entity }
       end
     end
   end
@@ -78,17 +71,16 @@ class ArticlesController < ApplicationController
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :form }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.json { render json: @article.errors,
+                      status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /articles/1
-  # DELETE /articles/1.json
   def destroy
     @article.destroy
     respond_to do |format|
-      format.html { redirect_to articles_url, flash: {success: 'Article was successfully deleted.' }}
+      format.html { redirect_to articles_url, notice: :destroy_success }
       format.json { head :no_content }
     end
   end
@@ -104,7 +96,8 @@ class ArticlesController < ApplicationController
       @article = Article.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white list
+    # through.
     def article_params
       params.require(:article).permit(:title, :body)
     end

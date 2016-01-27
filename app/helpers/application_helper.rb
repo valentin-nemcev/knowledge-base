@@ -16,11 +16,11 @@ module ApplicationHelper
     end
   end
 
-  def flash_messages(opts = {})
-    flash.map do |msg_type, message|
-      content_tag(:div,
-                  class: "alert #{bootstrap_class_for(msg_type)} fade in") do
-        close_button + message
+  def flash_messages(messages = {})
+    Array(flash.notice).map do |message_key|
+      type, text = *messages.fetch(message_key.to_sym, [:info, message_key])
+      content_tag(:div, class: "alert alert-#{type} fade in") do
+        close_button + text
       end
     end.join.html_safe
   end

@@ -2,6 +2,8 @@
   <%= link_to '← Back', articles_path %>
 </nav>
 
+<%= render 'flash_messages' %>
+
 <div class="row">
   <div class="col-md-5 col-md-push-7">
     <%= render "revisions" %>
@@ -14,7 +16,8 @@
       <% else %>
         Never reviewed
       <% end %>
-      <%= button_to 'Mark as reviewed', mark_as_reviewed_article_path(@article),
+      <%= button_to 'Mark as reviewed',
+        mark_as_reviewed_article_path(@article),
         class: 'btn btn-secondary btn-sm' %>
     </section>
   </div>
