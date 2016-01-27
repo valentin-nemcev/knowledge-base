@@ -9,6 +9,10 @@ gem 'pg', '~> 0.15'
 
 # https://github.com/twbs/bootstrap-rubygem
 gem 'bootstrap', '~> 4.0.0.alpha3'
+# Bootstrap dependency
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
+end
 
 # Markdown
 gem 'redcarpet'

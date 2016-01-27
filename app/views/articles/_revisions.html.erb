@@ -1,4 +1,4 @@
-<section class="ui clearfix">
+<section class="ui clearfix article-revisions">
   <h1>Revisions</h1>
   <ol>
     <% @article.revisions.each do |revision| %>
@@ -10,7 +10,8 @@
       </li>
     <% end %>
   </ol>
-  <% unless @article.new_record? || current_page?(edit_article_path(@article)) %>
+  <% show_actions ||= false %>
+  <% if show_actions %>
     <%= link_to 'Edit', edit_article_path(@article),
       class: 'btn btn-secondary' %>
     <%= button_to 'Delete article', article_path(@article),

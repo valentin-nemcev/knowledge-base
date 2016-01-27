@@ -68,11 +68,10 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.autosaving(true).update(article_params)
         format.html { redirect_to [:edit, @article]}
-        format.json { render :show, status: :ok, location: @article }
+        format.js { render 'form.js.coffee' }
       else
         format.html { render :form }
-        format.json { render json: @article.errors,
-                      status: :unprocessable_entity }
+        format.js { render 'form.js.coffee' }
       end
     end
   end
