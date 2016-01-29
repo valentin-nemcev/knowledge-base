@@ -1,19 +1,21 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-#
-
 $ ->
+  $autosaveButton = $(':submit[name=autosave]')
+  $form = $autosaveButton.closest('form')
+  autosaveIntervalMsec = 5000
 
-  $(':submit[name=autosave]').click( (ev) ->
+  $form.on('change input', ':input', _.debounce(
+    (ev) -> $autosaveButton.click()
+    autosaveIntervalMsec
+  ))
+
+  $autosaveButton.click( (ev) ->
     ev.preventDefault()
-    $form = $(this).closest('form')
-    console.log($form.attr('action') + '/autosave')
     $.ajax(
       method: "PATCH",
       url: $form.attr('action') + '/autosave',
       data: $form.serialize(),
       dataType: "script",
-      beforeSend: -> console.log("start"),
-      complete: -> console.log("complete"),
+      beforeSend: -> $autosaveButton.prop('disabled', true)
+      complete: -> $autosaveButton.prop('disabled', false)
     )
   )
