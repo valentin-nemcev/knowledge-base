@@ -1,13 +1,18 @@
+<% revisions = @article.revisions %>
 <section class="ui clearfix article-revisions">
   <h1>Revisions</h1>
   <ol>
-    <% @article.revisions.each do |revision| %>
-      <li>
-        <%= time_tag revision.updated_at %>
-        <% if revision.autosave? %>
-          <span class="label label-default">autosave</span>
-        <% end %>
-      </li>
+    <% if revisions.present? %>
+      <% revisions.each do |revision| %>
+        <li>
+          <%= time_tag revision.updated_at %>
+          <% if revision.autosave? %>
+            <span class="label label-default">autosave</span>
+          <% end %>
+        </li>
+      <% end %>
+    <% else %>
+      <div class="no-data">(No revisions)</div>
     <% end %>
   </ol>
   <% show_actions ||= false %>

@@ -6,6 +6,8 @@ gem 'rails', '4.2.5'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.15'
 
+# Decorators
+gem 'draper', '~> 1.3'
 
 # https://github.com/twbs/bootstrap-rubygem
 gem 'bootstrap', '~> 4.0.0.alpha3'

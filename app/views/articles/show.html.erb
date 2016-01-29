@@ -24,9 +24,9 @@
   <div class="col-md-7 col-md-pull-5">
 
     <div class="text">
-      <h1> <%= @article.title %></h1>
+      <h1> <%= @article.title_html %></h1>
 
-      <%= markdown @article.body %>
+      <%= @article.body_html %>
     </div>
   </div>
 </div>

@@ -32,9 +32,7 @@
         <%= f.submit 'Save', class: 'btn btn-primary' %>
         <%= f.submit 'Autosave', name: 'autosave',
           class: 'btn btn-secondary' %>
-        <%= link_to 'Back', @article.new_record? ? articles_path : @article,
-          class: 'btn btn-link'
-        %>
+        <%= link_to 'Back', @article, class: 'btn btn-link' %>
       </fieldset>
     <% end %>
   </div>

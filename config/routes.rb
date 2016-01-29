@@ -2,12 +2,7 @@ Rails.application.routes.draw do
 
   root to: redirect('/articles')
 
-  resources :articles do
-    collection do
-      post constraints: lambda { |req| req.params.key?(:autosave) },
-          action: :create_autosave
-    end
-
+  resources :articles, except: :create do
     member do
       post 'mark_as_reviewed'
       patch 'autosave', action: :update_autosave

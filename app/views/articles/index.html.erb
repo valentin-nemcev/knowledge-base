@@ -4,7 +4,7 @@
 
 <ul class="list-unstyled">
   <% @articles.each do |article| %>
-    <li><%= link_to article.title, article %></li>
+    <li><%= link_to article.title_html, article %></li>
   <% end %>
 </ul>
 

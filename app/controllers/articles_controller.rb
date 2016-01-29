@@ -6,49 +6,19 @@ class ArticlesController < ApplicationController
            :destroy, :mark_as_reviewed]
 
   def index
-    @articles = Article.all
+    @articles = Article.all.decorate
   end
 
   def show
   end
 
   def new
-    @article = Article.new
-    render :form
+    @article = Article.create
+    redirect_to [:edit, @article]
   end
 
   def edit
     render :form
-  end
-
-  def create
-    @article = Article.new()
-
-    respond_to do |format|
-      if @article.autosaving(false).update(article_params)
-        format.html { redirect_to @article, notice: :create_success }
-        format.json { render :show, status: :created, location: @article }
-      else
-        format.html { render :form }
-        format.json { render json: @article.errors,
-                      status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def create_autosave
-    @article = Article.new()
-
-    respond_to do |format|
-      if @article.autosaving(true).update(article_params)
-        format.html { redirect_to [:edit, @article] }
-        format.json { render :show, status: :created, location: @article }
-      else
-        format.html { render :form }
-        format.json { render json: @article.errors,
-                      status: :unprocessable_entity }
-      end
-    end
   end
 
   def update
@@ -92,7 +62,7 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.find(params[:id])
+      @article = Article.find(params[:id]).decorate
     end
 
     # Never trust parameters from the scary internet, only allow the white list
