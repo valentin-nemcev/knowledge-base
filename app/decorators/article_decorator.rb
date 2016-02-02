@@ -12,4 +12,12 @@ class ArticleDecorator < Draper::Decorator
       h.content_tag(:span, '(Untitled)', class: 'no-data')
     end
   end
+
+  def last_reviewed_at_html
+    h.time_ago_in_words_html(last_reviewed_at)
+  end
+
+  def updated_at_html
+    h.time_ago_in_words_html(updated_at)
+  end
 end

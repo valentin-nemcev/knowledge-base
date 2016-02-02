@@ -24,4 +24,15 @@ module ApplicationHelper
       end
     end.join.html_safe
   end
+
+  def time_ago_in_words_html(from_time, options = {})
+    if from_time.present?
+      content = time_ago_in_words(from_time, options) + ' ago'
+      datetime = from_time.iso8601
+      title = I18n.l(from_time, :format => :long)
+      content_tag(:time, content, {datetime: datetime, title: title})
+    else
+      content_tag(:span, '(Never)', class: 'no-data')
+    end
+  end
 end

@@ -2,10 +2,21 @@
 
 <%= render 'flash_messages' %>
 
-<ul class="list-unstyled">
-  <% @articles.each do |article| %>
-    <li><%= link_to article.title_html, article %></li>
-  <% end %>
-</ul>
+<table class="table">
+  <thead>
+    <th>Title</th>
+    <th>Reviewed</th>
+    <th>Updated</th>
+  </thead>
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td><%= link_to article.title_html, article %></td>
+        <td><%= article.last_reviewed_at_html %></td>
+        <td><%= article.updated_at_html %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= link_to 'New Article', new_article_path, {class: 'btn btn-primary'} %>

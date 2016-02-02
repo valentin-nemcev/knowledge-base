@@ -1,11 +1,16 @@
-<nav class="form-group">
-  <%= link_to '← Back', articles_path %>
-</nav>
-
-<%= render 'flash_messages' %>
-
 <div class="row">
-  <div class="col-md-5 col-md-push-7">
+  <div class="col-md-7">
+    <div class="text">
+      <%= render 'article_contents' %>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <nav class="form-group">
+      <%= link_to '← Back', articles_path %>
+    </nav>
+
+    <%= render 'flash_messages' %>
+
     <%= render "revisions", show_actions: true %>
     <section class="ui">
       <h1>Reviews</h1>
@@ -20,13 +25,5 @@
         mark_as_reviewed_article_path(@article),
         class: 'btn btn-secondary btn-sm' %>
     </section>
-  </div>
-  <div class="col-md-7 col-md-pull-5">
-
-    <div class="text">
-      <h1> <%= @article.title_html %></h1>
-
-      <%= @article.body_html %>
-    </div>
   </div>
 </div>
