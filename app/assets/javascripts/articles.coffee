@@ -1,7 +1,7 @@
 $ ->
   $autosaveButton = $(':submit[name=autosave]')
   $form = $autosaveButton.closest('form')
-  autosaveIntervalMsec = 5000
+  autosaveIntervalMsec = 3000
 
   $form.on('change input', ':input', _.debounce(
     (ev) -> $autosaveButton.click()
