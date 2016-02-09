@@ -52,6 +52,8 @@ group :development, :test do
   gem 'byebug'
 
   gem 'rspec-rails', '~> 3.0'
+  gem 'guard-rspec', '~> 4.6'
+  gem 'spring-commands-rspec', '~> 1.0'
 end
 
 group :development do
