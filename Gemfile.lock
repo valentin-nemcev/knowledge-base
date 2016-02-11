@@ -42,6 +42,7 @@ GEM
     autoprefixer-rails (6.3.1)
       execjs
       json
+    awesome_print (1.6.1)
     berkshelf (4.0.1)
       addressable (~> 2.3.4)
       berkshelf-api-client (~> 2.0)
@@ -303,6 +304,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   berkshelf
   bootstrap (~> 4.0.0.alpha3)
   byebug
