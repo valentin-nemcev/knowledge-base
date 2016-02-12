@@ -57,7 +57,7 @@ class Article < ActiveRecord::Base
   end
 
   def add_review(time:, response_quality: nil)
-    self.reviews.create(reviewed_at: time, response_quality: response_quality)
+    self.reviews.create!(reviewed_at: time, response_quality: response_quality)
   end
 
 
