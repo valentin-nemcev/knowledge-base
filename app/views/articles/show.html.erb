@@ -12,18 +12,6 @@
     <%= render 'flash_messages' %>
 
     <%= render "revisions", show_actions: true %>
-    <section class="ui">
-      <h1>Reviews</h1>
-      <% if @article.ever_reviewed? %>
-        Last reviewed <%= time_ago_in_words(@article.last_reviewed_at) %> ago,
-        in total <%= pluralize(@article.review_count, 'review') %> over
-        <%= time_ago_in_words(@article.first_reviewed_at) %>.
-      <% else %>
-        Never reviewed
-      <% end %>
-      <%= button_to 'Mark as reviewed',
-        mark_as_reviewed_article_path(@article),
-        class: 'btn btn-secondary btn-sm' %>
-    </section>
+    <%= render "reviews" %>
   </div>
 </div>

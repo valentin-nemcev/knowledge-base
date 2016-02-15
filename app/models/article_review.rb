@@ -2,7 +2,7 @@ class ArticleReview < ActiveRecord::Base
   belongs_to :article
 
   validates :response_quality,
-    inclusion: { in: (0..5).to_set + [nil],
+    inclusion: { in: (0..5),
                  message: "%{value} must be integer in [0, 5]" }
 
   def update_prev_reviews(prev)
@@ -15,6 +15,7 @@ class ArticleReview < ActiveRecord::Base
   end
 
   def next_interval
+    return nil unless valid?
     if prev_reviews.empty? || response_quality < 3
       1.day
     elsif last_interval < 6.days
@@ -25,7 +26,7 @@ class ArticleReview < ActiveRecord::Base
   end
 
   def next_at
-    (reviewed_at + next_interval)
+    next_interval.present? ? (reviewed_at + next_interval) : nil
   end
 
   def last_interval
@@ -33,6 +34,7 @@ class ArticleReview < ActiveRecord::Base
   end
 
   def e_factor
+    return nil unless valid?
     prev_reviews.reduce(2.5) do |ef, review|
       q = review.response_quality
       next if q.nil?

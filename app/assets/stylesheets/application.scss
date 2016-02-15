@@ -59,5 +59,9 @@ section.ui {
   h2 {
     font-size: $font-size-sm;
   }
+
+  ol, ul {
+    padding-left: 0;
+  }
 }
 

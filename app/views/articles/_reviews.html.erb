@@ -1,0 +1,18 @@
+<% reviews = @article.reviews %>
+<section class="ui">
+  <h1>Reviews</h1>
+  <ol>
+    <% if reviews.present? %>
+      <% reviews.each do |review| %>
+        <li>
+          <%= time_tag review.reviewed_at %>
+        </li>
+      <% end %>
+    <% else %>
+      <div class="no-data">(No reviews)</div>
+    <% end %>
+  </ol>
+  <%= button_to 'Mark as reviewed',
+    mark_as_reviewed_article_path(@article),
+    class: 'btn btn-secondary btn-sm' %>
+</section>
