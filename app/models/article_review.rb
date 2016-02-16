@@ -1,9 +1,27 @@
 class ArticleReview < ActiveRecord::Base
   belongs_to :article
 
+
+  before_create :set_default_reviewed_at
+
+  def set_default_reviewed_at
+    self.reviewed_at ||= DateTime.now
+    true
+  end
+
   validates :response_quality,
     inclusion: { in: (0..5),
                  message: "%{value} must be integer in [0, 5]" }
+
+  RESPONSE_RATINGS = [
+    [5, "perfect response"],
+    [4, "correct response after a hesitation"],
+    [3, "correct response recalled with serious difficulty"],
+    [2, "incorrect response; where the correct one seemed easy to recall"],
+    [1, "incorrect response; the correct one remembered"],
+    [0, "complete blackout"],
+  ]
+
 
   def update_prev_reviews(prev)
     @prev_reviews = prev

@@ -5,14 +5,29 @@
     <% if reviews.present? %>
       <% reviews.each do |review| %>
         <li>
-          <%= time_tag review.reviewed_at %>
+          <%= time_tag review.reviewed_at %>,
+          <%= review.response_quality %>
         </li>
       <% end %>
     <% else %>
       <div class="no-data">(No reviews)</div>
     <% end %>
   </ol>
-  <%= button_to 'Mark as reviewed',
-    mark_as_reviewed_article_path(@article),
-    class: 'btn btn-secondary btn-sm' %>
+  <%= form_for(@article.reviews.build, url: article_reviews_path(@article.id),
+               method: 'post',
+               html: {class: 'form-inline'}) do |f| %>
+    <fieldset class="form-group">
+      <%= f.select :response_quality,
+        ArticleReview::RESPONSE_RATINGS.map(&:reverse),
+        {},
+        class: 'form-control', style: 'width: 15em'
+      %>
+    </fieldset>
+    <fieldset class="form-group">
+      <%= f.submit 'Review', class: 'btn btn-secondary' %>
+    </fieldset>
+  <% end %>
+  <%# <%= button_to 'Mark as reviewed', %>
+  <%#   mark_as_reviewed_article_path(@article), %>
+  <%#   class: 'btn btn-secondary btn-sm' %1> %>
 </section>
