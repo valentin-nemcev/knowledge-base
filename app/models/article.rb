@@ -1,7 +1,7 @@
 class Article < ActiveRecord::Base
 
-  has_many :revisions, class_name: 'ArticleRevision', dependent: :destroy
-  belongs_to :current_revision, class_name: 'ArticleRevision', autosave: true
+  has_many :revisions, dependent: :destroy
+  belongs_to :current_revision, class_name: 'Revision', autosave: true
   before_destroy :unset_current_revision, prepend: true
 
   def unset_current_revision
@@ -37,29 +37,7 @@ class Article < ActiveRecord::Base
   end
 
 
-  has_many :reviews,  -> { order(:reviewed_at) },
-    class_name: 'ArticleReview', dependent: :destroy
-
-  def ever_reviewed?
-    self.reviews.present?
-  end
-
-  def review_count
-    self.reviews.count
-  end
-
-  def first_reviewed_at
-    self.reviews.first.try!(:reviewed_at)
-  end
-
-  def last_reviewed_at
-    self.reviews.last.try!(:reviewed_at)
-  end
-
-  def add_review(time:, response_quality: nil)
-    self.reviews.create!(reviewed_at: time, response_quality: response_quality)
-  end
-
+  has_many :reviews, -> { order(:reviewed_at) }, dependent: :destroy
 
   # Should be called by review that needs reference to previous reviews in
   # sequence
@@ -73,6 +51,10 @@ class Article < ActiveRecord::Base
         requesting_review.update_prev_reviews(reviews[0...i])
       end
     end
+  end
+
+  def last_reviewed_at
+    reviews.last.try!(:reviewed_at)
   end
 
   def next_review_at

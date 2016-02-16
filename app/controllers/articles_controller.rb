@@ -2,11 +2,13 @@ class ArticlesController < ApplicationController
   include MarkdownHelper
 
   before_action :set_article,
-    only: [:show, :edit, :update, :update_autosave,
-           :destroy, :mark_as_reviewed]
+    only: [:show, :edit, :update, :update_autosave, :destroy]
 
   def index
-    @articles = Article.all.decorate
+    @articles = Article
+      .includes(:current_revision, :reviews)
+      .all
+      .decorate
   end
 
   def show
@@ -54,15 +56,13 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def mark_as_reviewed
-    @article.add_review(Time.now)
-    render :show
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.find(params[:id]).decorate
+      @article = Article
+        .includes(:revisions, :reviews)
+        .find(params[:id])
+        .decorate
     end
 
     # Never trust parameters from the scary internet, only allow the white list

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: redirect('/articles')
 
   resources :articles, except: :create do
-    resources :reviews, only: [:create, :destroy], controller: 'article_reviews'
+    resources :reviews, only: [:create, :destroy]
     member do
       patch 'autosave', action: :update_autosave
       match via: [:patch, :put],

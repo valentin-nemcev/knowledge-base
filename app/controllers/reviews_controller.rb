@@ -1,4 +1,4 @@
-class ArticleReviewsController < ApplicationController
+class ReviewsController < ApplicationController
   before_action :set_article,
 
   def create
@@ -24,6 +24,6 @@ class ArticleReviewsController < ApplicationController
     end
 
     def review_params
-      params.require(:article_review).permit(:response_quality)
+      params.require(:review).permit(:response_quality)
     end
 end

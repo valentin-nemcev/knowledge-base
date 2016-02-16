@@ -1,4 +1,4 @@
-class ArticleReview < ActiveRecord::Base
+class Review < ActiveRecord::Base
   belongs_to :article
 
 
