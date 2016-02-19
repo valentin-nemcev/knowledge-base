@@ -9,6 +9,8 @@ class ArticlesController < ApplicationController
       .includes(:current_revision, :reviews)
       .all
       .decorate
+      .sort_by(&:next_review_at_for_sort)
+      .reverse!
   end
 
   def show

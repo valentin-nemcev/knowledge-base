@@ -61,4 +61,8 @@ class Article < ActiveRecord::Base
     reviews.last.try!(:next_at)
   end
 
+  def next_review_at_for_sort
+    next_review_at || Time.zone.at(0)
+  end
+
 end
