@@ -7,12 +7,19 @@
         <tr>
           <td><%= time_tag review.reviewed_at, format: :short %></td>
           <td><%= review.response_quality_html %></td>
+          <td width="1em">
+            <%= button_to '×', [@article, review],
+              method: :delete,
+              class: 'btn btn-sm btn-danger-outline',
+              data: {confirm: 'Are you sure?' } %>
+          </td>
         </tr>
       <% end %>
       <% if @article.next_review_at.present? %>
         <tr class="no-data">
           <td><%= time_tag @article.next_review_at, format: :short %></td>
           <td>Next</td>
+          <td></td>
         </tr>
       <% end %>
     <% else %>
@@ -27,7 +34,7 @@
       <%= f.select :response_quality,
         Review::RESPONSE_RATINGS.to_a.map(&:reverse),
         {},
-        class: 'form-control', style: 'width: 15em'
+        class: 'form-control'
       %>
     </fieldset>
     <fieldset class="form-group">

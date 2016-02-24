@@ -55,7 +55,7 @@ class Review < ActiveRecord::Base
     return nil unless valid?
     prev_reviews.reduce(2.5) do |ef, review|
       q = review.response_quality
-      next if q.nil?
+      return ef if q.nil?
       ef = ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
       [ef, 1.3].max
     end

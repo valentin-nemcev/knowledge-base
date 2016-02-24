@@ -1,20 +1,20 @@
 class ReviewsController < ApplicationController
-  before_action :set_article,
+  before_action :set_article
 
   def create
     @review = @article.reviews.create!(review_params)
     respond_to do |format|
-      format.html { redirect_to @article, notice: :review_success }
+      format.html { redirect_to @article, notice: :review_create_success }
       format.json { head :no_content }
     end
   end
 
   def destroy
-    # @article.destroy
-    # respond_to do |format|
-    #   format.html { redirect_to articles_url, notice: :destroy_success }
-    #   format.json { head :no_content }
-    # end
+    @article.reviews.find(params[:id]).destroy
+    respond_to do |format|
+      format.html { redirect_to @article, notice: :review_destroy_success }
+      format.json { head :no_content }
+    end
   end
 
   private

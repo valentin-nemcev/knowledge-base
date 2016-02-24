@@ -15,8 +15,8 @@ RSpec.describe 'Spaced repetition' do
     def match_reviews(expected)
       actual = expected.map do |delay, response_quality, expected_interval|
         review_time = article.next_review_at || start_date
-        article.add_review(
-          time: review_time + delay.days,
+        article.reviews.create!(
+          reviewed_at: review_time + delay.days,
           response_quality: response_quality
         )
         [delay, response_quality,
