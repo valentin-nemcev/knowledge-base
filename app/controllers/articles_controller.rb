@@ -10,7 +10,6 @@ class ArticlesController < ApplicationController
       .all
       .decorate
       .sort_by(&:next_review_at_for_sort)
-      .reverse!
   end
 
   def show

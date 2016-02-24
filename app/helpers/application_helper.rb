@@ -40,4 +40,10 @@ module ApplicationHelper
       content_tag(:span, '(Never)', class: 'no-data')
     end
   end
+
+  def nav_link(body, url, options = {})
+    link_options = {class: ['nav-link']}
+    link_options[:class] << 'active' if current_page?(url)
+    link_to(body, url, link_options.merge(options))
+  end
 end

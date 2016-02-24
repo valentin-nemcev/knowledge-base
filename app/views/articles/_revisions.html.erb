@@ -1,20 +1,24 @@
 <% revisions = @article.revisions %>
 <section class="ui clearfix article-revisions">
   <h1>Revisions</h1>
-  <ol>
+  <table class="table table-sm">
     <% if revisions.present? %>
       <% revisions.each do |revision| %>
-        <li>
-          <%= time_tag revision.updated_at %>
-          <% if revision.autosave? %>
-            <span class="label label-default">autosave</span>
-          <% end %>
-        </li>
+        <tr>
+          <td><%= time_tag revision.updated_at, format: :short %></td>
+          <td>
+            <% if revision.autosave? %>
+              <span class="label label-default">autosave</span>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
     <% else %>
-      <div class="no-data">(No revisions)</div>
+      <tr>
+        <td class="no-data">(No revisions)</td>
+      </tr>
     <% end %>
-  </ol>
+  </table>
   <% show_actions ||= false %>
   <% if show_actions %>
     <%= link_to 'Edit', edit_article_path(@article),

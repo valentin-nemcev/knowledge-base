@@ -13,14 +13,14 @@ class Review < ActiveRecord::Base
     inclusion: { in: (0..5),
                  message: "%{value} must be integer in [0, 5]" }
 
-  RESPONSE_RATINGS = [
-    [5, "perfect response"],
-    [4, "correct response after a hesitation"],
-    [3, "correct response recalled with serious difficulty"],
-    [2, "incorrect response; where the correct one seemed easy to recall"],
-    [1, "incorrect response; the correct one remembered"],
-    [0, "complete blackout"],
-  ]
+  RESPONSE_RATINGS = Hash[[
+    [5, "Easy"],
+    [4, "Good"],
+    [3, "Hard"],
+    [2, "Again"],
+    # [1, "incorrect response; the correct one remembered"],
+    # [0, "complete blackout"],
+  ]]
 
 
   def update_prev_reviews(prev)

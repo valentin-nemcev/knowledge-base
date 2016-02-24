@@ -1,23 +1,31 @@
 <% reviews = @article.reviews %>
 <section class="ui">
   <h1>Reviews</h1>
-  <ol>
+  <table class="table table-sm">
     <% if reviews.present? %>
       <% reviews.each do |review| %>
-        <li>
-          <%= time_tag review.reviewed_at %>,
-          <%= review.response_quality %>
-        </li>
+        <tr>
+          <td><%= time_tag review.reviewed_at, format: :short %></td>
+          <td><%= review.response_quality_html %></td>
+        </tr>
+      <% end %>
+      <% if @article.next_review_at.present? %>
+        <tr class="no-data">
+          <td><%= time_tag @article.next_review_at, format: :short %></td>
+          <td>Next</td>
+        </tr>
       <% end %>
     <% else %>
-      <div class="no-data">(No reviews)</div>
+      <tr>
+        <td class="no-data">(No reviews)</td>
+      </tr>
     <% end %>
-  </ol>
-  <%= form_for([@article, @article.reviews.build],
+  </table>
+  <%= form_for([@article, Review.new],
                html: {class: 'form-inline'}) do |f| %>
     <fieldset class="form-group">
       <%= f.select :response_quality,
-        Review::RESPONSE_RATINGS.map(&:reverse),
+        Review::RESPONSE_RATINGS.to_a.map(&:reverse),
         {},
         class: 'form-control', style: 'width: 15em'
       %>
@@ -26,7 +34,4 @@
       <%= f.submit 'Review', class: 'btn btn-secondary' %>
     </fieldset>
   <% end %>
-  <%# <%= button_to 'Mark as reviewed', %>
-  <%#   mark_as_reviewed_article_path(@article), %>
-  <%#   class: 'btn btn-secondary btn-sm' %1> %>
 </section>

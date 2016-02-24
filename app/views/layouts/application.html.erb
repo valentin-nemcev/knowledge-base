@@ -11,7 +11,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <nav class="navbar navbar-full m-b-1 navbar-light bg-faded">
+    <span class="navbar-brand">KB</span>
+    <div class="nav navbar-nav">
+      <%= nav_link('Articles', '/articles') %>
+    </div>
+  </nav>
   <div class="container-fluid">
     <%= yield %>
   </div>

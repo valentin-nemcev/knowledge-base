@@ -1,6 +1,6 @@
 class Article < ActiveRecord::Base
 
-  has_many :revisions, dependent: :destroy
+  has_many :revisions, -> { order(:updated_at) }, dependent: :destroy
   belongs_to :current_revision, class_name: 'Revision', autosave: true
   before_destroy :unset_current_revision, prepend: true
 
@@ -10,10 +10,10 @@ class Article < ActiveRecord::Base
 
   def autosaving(autosave)
     if current_revision.nil?
-      build_current_revision(article: self, autosave: autosave)
+      self.current_revision = revisions.build(article: self, autosave: autosave)
     elsif current_revision.persisted?
       unless current_revision.autosave?
-        build_current_revision(article: self)
+        self.current_revision = revisions.build(article: self)
       end
       current_revision.autosave = autosave
     end

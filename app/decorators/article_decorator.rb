@@ -1,6 +1,8 @@
 class ArticleDecorator < Draper::Decorator
   delegate_all
 
+  decorates_association :reviews
+
   def body_html
     h.markdown(body || '')
   end
