@@ -18,7 +18,7 @@ end
 gem 'underscore-rails'
 
 # Markdown
-gem 'redcarpet'
+gem 'kramdown', '~> 1.9'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
