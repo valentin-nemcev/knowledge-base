@@ -4,29 +4,40 @@ namespace :db do
   desc "Dumps the database to backups"
   task :dump => :environment do
     backup_dir = backup_directory true
-    cmd = nil
-    with_config do |app, db, user|
-      cmd = "pg_dump -F c -v  -d #{db} -f #{backup_dir}/#{Time.now.strftime("%Y%m%d%H%M%S")}_#{db}.psql"
+    cmd = with_config do |db, user|
+      date = Time.now.strftime("%Y-%m-%d_%H-%M-%S")
+      [
+        "pg_dump",
+        "--verbose",
+        "--username", user,
+        "--dbname", db,
+        "--format=c",
+        "--file", "#{backup_dir}/#{date}_#{db}.psql",
+      ]
     end
-    puts cmd
-    exec cmd
+    sh(*cmd, verbose: true)
   end
 
   desc "Restores the database from backups"
-  task :restore, [:date] => :environment do |task,args|
-    if args.date.present?
-      backup_dir = backup_directory false
-      cmd = nil
-      with_config do |app, db, user|
-        cmd = "pg_restore -F c -v -c -C #{backup_dir}/#{args.date}_#{db}.psql"
-      end
-      Rake::Task["db:drop"].invoke
-      Rake::Task["db:create"].invoke
-      puts cmd
-      exec cmd
-    else
-      puts 'Please pass a date to the task'
+  task :restore, [:date] => :environment do |task, args|
+    fail 'Please pass a date to the task' if args.date.blank?
+
+    backup_dir = backup_directory false
+    cmd = with_config do |db, user|
+      [
+        "pg_restore",
+        "--verbose",
+        "--username", user,
+        "--dbname", db,
+        "--format=c",
+        "--no-owner",
+        "--no-acl",
+        "#{backup_dir}/#{args.date}_#{db}.psql",
+      ]
     end
+    Rake::Task["db:drop"].invoke
+    Rake::Task["db:create"].invoke
+    sh(*cmd, verbose: true)
   end
 
   private
@@ -41,8 +52,6 @@ namespace :db do
   end
 
   def with_config
-    yield Rails.application.class.parent_name.underscore,
-      ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username]
+    yield ActiveRecord::Base.connection_config.values_at(:database, :username)
   end
 end
