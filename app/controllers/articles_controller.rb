@@ -2,14 +2,15 @@ class ArticlesController < ApplicationController
   include MarkdownHelper
 
   before_action :set_article,
-    only: [:show, :edit, :update, :update_autosave, :destroy]
+    only: [:show, :edit, :update, :update_autosave, :restore, :destroy]
 
   def index
-    @articles = Article
-      .includes(:current_revision, :reviews)
-      .all
-      .decorate
-      .sort_by(&:next_review_at_for_sort)
+    @articles =
+      (params[:with_deleted] ? Article : Article.without_soft_destroyed)
+        .includes(:current_revision, :reviews)
+        .all
+        .decorate
+        .sort_by(&:next_review_at_for_sort)
   end
 
   def show
@@ -49,8 +50,20 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def restore
+    @article.restore
+    respond_to do |format|
+      format.html { redirect_to articles_url, notice: :restore_success }
+      format.json { head :no_content }
+    end
+  end
+
   def destroy
-    @article.destroy
+    if params[:forever]
+      @article.destroy
+    else
+      @article.soft_destroy
+    end
     respond_to do |format|
       format.html { redirect_to articles_url, notice: :destroy_success }
       format.json { head :no_content }

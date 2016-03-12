@@ -1,5 +1,19 @@
 class Article < ActiveRecord::Base
 
+  scope :without_soft_destroyed, -> { where(destroyed_at: nil) }
+
+  def soft_destroy
+    touch(:destroyed_at)
+  end
+
+  def restore
+    update_attribute(:destroyed_at, nil)
+  end
+
+  def soft_destroyed?
+    self.destroyed_at.present?
+  end
+
   has_many :revisions, -> { order(:updated_at) }, dependent: :destroy
   belongs_to :current_revision, class_name: 'Revision', autosave: true
   before_destroy :unset_current_revision, prepend: true

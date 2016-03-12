@@ -1,4 +1,13 @@
-<h1>Listing Articles</h1>
+<div class="clearfix">
+  <h1 class="pull-xs-left">Articles</h1>
+  <% link = if params[:with_deleted]
+              ["Without deleted", articles_path]
+            else
+              ["With deleted", articles_path(:with_deleted => true)]
+            end
+  %>
+  <%= link_to(*link, class: 'pull-xs-right') %>
+</div>
 
 <%= render 'flash_messages' %>
 
@@ -11,7 +20,7 @@
   </thead>
   <tbody>
     <% @articles.each do |article| %>
-      <tr>
+      <tr class="<%= 'deleted' if article.soft_destroyed? %>">
         <td><%= link_to article.title_html, article %></td>
         <td><%= article.last_reviewed_at_html %></td>
         <td><%= article.next_review_at_html %></td>

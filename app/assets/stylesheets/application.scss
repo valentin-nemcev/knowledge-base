@@ -44,6 +44,11 @@ body {
 }
 
 
+.inline {
+  display: inline;
+}
+
+
 section.ui {
   @extend .form-group;
 
@@ -65,3 +70,15 @@ section.ui {
   }
 }
 
+tr.deleted {
+  td { position: relative}
+
+  td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+    width: 100%;
+  }
+}

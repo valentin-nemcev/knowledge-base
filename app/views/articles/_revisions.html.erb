@@ -18,14 +18,35 @@
         <td class="no-data">(No revisions)</td>
       </tr>
     <% end %>
+    <% if @article.destroyed_at.present? %>
+      <tr class="no-data">
+        <td><%= time_tag @article.destroyed_at, format: :short %></td>
+        <td>
+            <span class="label label-default">deleted</span>
+        </td>
+      </tr>
+    <% end %>
   </table>
   <% show_actions ||= false %>
   <% if show_actions %>
-    <%= link_to 'Edit', edit_article_path(@article),
-      class: 'btn btn-secondary' %>
-    <%= button_to 'Delete article', article_path(@article),
-      method: :delete,
-      class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
-      data: {confirm: 'Are you sure?' } %>
+    <% if !@article.soft_destroyed? %>
+      <%= link_to 'Edit', edit_article_path(@article),
+        class: 'btn btn-secondary' %>
+    <% else %>
+      <%= button_to 'Restore', restore_article_path(@article),
+        class: 'btn btn-secondary', form_class: 'inline' %>
+    <% end %>
+    <% if !@article.soft_destroyed? && @article.revisions.present? %>
+      <%= button_to 'Delete article', article_path(@article),
+        method: :delete,
+        class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+        data: {confirm: 'Are you sure?' } %>
+    <% else %>
+      <%= button_to 'Delete forever', article_path(@article, forever: true),
+        method: :delete,
+        class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+        data: {confirm: 'Are you sure?' } %>
+    <% end %>
+
   <% end %>
 </section>
