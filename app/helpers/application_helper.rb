@@ -42,8 +42,8 @@ module ApplicationHelper
   end
 
   def nav_link(body, url, options = {})
-    link_options = {class: ['nav-link']}
+    link_options = {class: ['nav-item', 'nav-link'] | [*options.fetch(:class, [])]}
     link_options[:class] << 'active' if current_page?(url)
-    link_to(body, url, link_options.merge(options))
+    link_to(body, url, options.merge(link_options))
   end
 end
