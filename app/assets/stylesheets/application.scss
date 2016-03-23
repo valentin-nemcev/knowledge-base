@@ -30,6 +30,33 @@ body {
   pre {
     overflow: scroll-x;
   }
+
+
+  h1, .h1 { font-size: $font-size-h3; }
+  h2, .h2 { font-size: $font-size-h4; }
+  h3, .h3 { font-size: $font-size-h5; }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      padding-left: 1em;
+      text-indent: -1em;
+
+      &:before { content: "— "; }
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+    padding-left: 0;
+  }
+
+  .todo {
+    @extend mark;
+  }
 }
 
 
@@ -48,6 +75,14 @@ body {
   display: inline;
 }
 
+
+a[rel~="source"]:after {
+  content: 'source';
+  margin-left: 0.5ex;
+  @extend sup;
+  @extend .label;
+  @extend .label-default;
+}
 
 section.ui {
   @extend .form-group;
