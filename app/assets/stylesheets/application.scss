@@ -57,6 +57,15 @@ body {
   .todo {
     @extend mark;
   }
+
+  a[rel~="source"]:after {
+    content: 'source';
+    margin-left: 0.5ex;
+    @extend sup;
+    @extend .label;
+    @extend .label-default;
+  }
+
 }
 
 
@@ -75,14 +84,6 @@ body {
   display: inline;
 }
 
-
-a[rel~="source"]:after {
-  content: 'source';
-  margin-left: 0.5ex;
-  @extend sup;
-  @extend .label;
-  @extend .label-default;
-}
 
 section.ui {
   @extend .form-group;

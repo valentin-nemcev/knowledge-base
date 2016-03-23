@@ -79,4 +79,18 @@ class Article < ActiveRecord::Base
     next_review_at || Time.zone.at(0)
   end
 
+
+  def body_html
+    @body_html ||= Kramdown::Document.new(body).to_html.html_safe
+  end
+
+  def body_doc
+    @body_doc ||= Nokogiri::HTML.fragment(body_html)
+  end
+
+  def labels
+    todo_count = body_doc.css('.todo').size
+    todo_count > 0 ? ["TODO: #{todo_count}"] : []
+  end
+
 end
