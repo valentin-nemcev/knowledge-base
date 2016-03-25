@@ -66,6 +66,18 @@ body {
     @extend .label-default;
   }
 
+  [id|="card"] {
+    padding-left: 0.4em;
+    margin-left: -0.6em;
+    border-left: 0.2em solid $gray-light;
+
+  }
+
+  [class|="blank"] {
+    background: $gray-lightest;
+
+  }
+
 }
 
 

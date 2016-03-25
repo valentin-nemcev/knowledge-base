@@ -81,7 +81,9 @@ class Article < ActiveRecord::Base
 
 
   def body_html
-    @body_html ||= Kramdown::Document.new(body).to_html.html_safe
+    @body_html ||=
+      Kramdown::Document.new(body || '', parse_block_html: true)
+        .to_html.html_safe
   end
 
   def body_doc
