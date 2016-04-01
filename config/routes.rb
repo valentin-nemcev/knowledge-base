@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :articles, except: :create do
     resources :reviews, only: [:create, :destroy]
+    resources :cards, only: [:index]
     member do
       post 'restore'
       patch 'autosave', action: :update_autosave

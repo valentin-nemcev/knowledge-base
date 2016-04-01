@@ -95,4 +95,9 @@ class Article < ActiveRecord::Base
     todo_count > 0 ? ["TODO: #{todo_count}"] : []
   end
 
+  def cards
+    body_doc.css('[id|="card"]')
+      .flat_map{ |d| Card.build_card_group(d, self) }
+  end
+
 end

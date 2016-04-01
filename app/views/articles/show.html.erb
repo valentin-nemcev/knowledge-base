@@ -9,5 +9,9 @@
 
     <%= render "revisions", show_actions: true %>
     <%= render "reviews" %>
+    <section class="ui">
+      <h1>Cards</h1>
+      <%= link_to 'Cards list', article_cards_path(@article) %>
+    </section>
   </div>
 </div>

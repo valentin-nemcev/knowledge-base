@@ -1,0 +1,8 @@
+<%= content_tag(:em, card.id) %>
+<%# <%= ap(card.context).html_safe %1> %>
+<%# <%= ap(card.article_context).html_safe %1> %>
+<%= card.article_context.to_html.html_safe %>
+<% card.context.each do |el| %>
+  <%= el.to_html.html_safe %>
+<% end %>
+<%= card.body_html %>
