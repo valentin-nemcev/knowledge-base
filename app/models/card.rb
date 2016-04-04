@@ -7,6 +7,7 @@ class Nokogiri::XML::Node
   def remove_class(*classes)
     existing = self['class'].to_s.split(/\s+/)
     self['class'] = (existing - classes).join(" ")
+    self.delete('class') if self['class'].empty?
   end
 end
 
@@ -49,8 +50,10 @@ class CardGroup
   def ungroup_blanks(card_element)
     card_element
       .css('.blank-group')
-      .tap{ |els| els.remove_class('blank-group') }
-      .each{ |el| el.children.add_class('blank') }
+      .each do |el|
+        el.remove_class('blank-group')
+        el.children.add_class('blank')
+      end
     card_element
   end
 
@@ -60,8 +63,8 @@ class CardGroup
 
   def separate_blanks(card_element)
     card_element
-      .css('.blank')
-      .tap{ |els| els.remove_class('blank') }
+      .css('.blank').to_a
+      .each{ |el| el.remove_class('blank') }
       .map do |blank_el|
         blank_el.add_class('blank')
         new_element = card_element.dup
