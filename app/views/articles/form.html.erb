@@ -16,6 +16,9 @@
       <fieldset class="form-group">
         <%= f.text_area :body, class: 'form-control', rows: 30 %>
       </fieldset>
+      <fieldset class="form-group">
+        <%= f.select :format, Format.select_options, {}, class: 'form-control' %>
+      </fieldset>
       <fieldset class="form-group clearfix">
         <%= f.submit 'Save', class: 'btn btn-primary' %>
         <%= f.submit 'Autosave', name: 'autosave',

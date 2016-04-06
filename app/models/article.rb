@@ -80,10 +80,12 @@ class Article < ActiveRecord::Base
   end
 
 
+  include ClassyEnum::ActiveRecord
+  classy_enum_attr :format, default: :slim
+
+
   def body_html
-    @body_html ||=
-      Kramdown::Document.new(body || '', parse_block_html: true)
-        .to_html.html_safe
+    @body_html ||= format.render(body || '')
   end
 
   def body_doc

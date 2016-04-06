@@ -9,6 +9,9 @@ gem 'pg', '~> 0.15'
 # Decorators
 gem 'draper', '~> 1.3'
 
+# Enumerations for Active Record
+gem 'classy_enum', '~> 4.0'
+
 # https://github.com/twbs/bootstrap-rubygem
 gem 'bootstrap', '~> 4.0.0.alpha3'
 # Bootstrap dependency
@@ -19,6 +22,9 @@ gem 'underscore-rails'
 
 # Markdown
 gem 'kramdown', '~> 1.9'
+
+gem 'slim', '~> 3.0'
+
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
