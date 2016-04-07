@@ -1,10 +1,10 @@
-class Format < ClassyEnum::Base
+class MarkupLanguage < ClassyEnum::Base
   def render(string)
     template {string || ''}.render.html_safe
   end
 end
 
-class Format::Slim < Format
+class MarkupLanguage::Slim < MarkupLanguage
   Slim = ::Slim
 
   def template(&block)
@@ -18,7 +18,7 @@ class Format::Slim < Format
   end
 end
 
-class Format::Kramdown < Format
+class MarkupLanguage::Kramdown < MarkupLanguage
   def template(&block)
     Tilt::KramdownTemplate.new(parse_block_html: true, &block)
   end

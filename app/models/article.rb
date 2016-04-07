@@ -42,12 +42,24 @@ class Article < ActiveRecord::Base
     current_revision.title = title
   end
 
+  def markup_language
+    current_revision.try!(:markup_language)
+  end
+
+  def markup_language=(markup_language)
+    current_revision.markup_language = markup_language
+  end
+
   def body
     current_revision.try!(:body)
   end
 
   def body=(body)
     current_revision.body = body
+  end
+
+  def body_html
+    current_revision.try!(:body_html)
   end
 
 
@@ -79,14 +91,6 @@ class Article < ActiveRecord::Base
     next_review_at || Time.zone.at(0)
   end
 
-
-  include ClassyEnum::ActiveRecord
-  classy_enum_attr :format, default: :slim
-
-
-  def body_html
-    @body_html ||= format.render(body || '')
-  end
 
   def body_doc
     @body_doc ||= Nokogiri::HTML.fragment(body_html)
