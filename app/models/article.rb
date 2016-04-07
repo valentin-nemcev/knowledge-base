@@ -34,33 +34,10 @@ class Article < ActiveRecord::Base
     self
   end
 
-  def title
-    current_revision.try!(:title)
-  end
+  delegate :title, :markup_language, :body, :body_html,
+    to: :current_revision, allow_nil: true
 
-  def title=(title)
-    current_revision.title = title
-  end
-
-  def markup_language
-    current_revision.try!(:markup_language)
-  end
-
-  def markup_language=(markup_language)
-    current_revision.markup_language = markup_language
-  end
-
-  def body
-    current_revision.try!(:body)
-  end
-
-  def body=(body)
-    current_revision.body = body
-  end
-
-  def body_html
-    current_revision.try!(:body_html)
-  end
+  delegate :title=, :markup_language=, :body=, to: :current_revision
 
 
   has_many :reviews, -> { order(:reviewed_at) }, dependent: :destroy

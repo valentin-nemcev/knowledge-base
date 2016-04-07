@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20160406101328) do
     t.datetime "updated_at",                      null: false
     t.boolean  "autosave",        default: false, null: false
     t.string   "markup_language",                 null: false
-    t.string   "body_html"
+    t.string   "body_html",                       null: false
   end
 
   add_index "revisions", ["article_id"], name: "index_revisions_on_article_id", using: :btree
