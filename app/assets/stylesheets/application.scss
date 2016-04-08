@@ -23,10 +23,12 @@ body {
   margin-top: 0.5rem;
 }
 
-.text {
+.text-column {
   max-width: 60ex;
+}
 
 
+.article, .kb-card {
   pre {
     overflow: scroll-x;
   }
@@ -65,19 +67,25 @@ body {
     @extend .label;
     @extend .label-default;
   }
+}
 
-  .article-card, [id|="card"] {
+.article {
+  [data-context] {
     padding-left: 0.4em;
     margin-left: -0.6em;
     border-left: 0.2em solid $gray-light;
 
   }
 
-  [class|="blank"] {
+  [data-blank], [data-blank-group] {
     background: $gray-lightest;
-
   }
+}
 
+.kb-card {
+  .blank {
+    background: $gray-lightest;
+  }
 }
 
 

@@ -5,7 +5,7 @@
     <% if revisions.present? %>
       <% revisions.each do |revision| %>
         <tr>
-          <td><%= time_tag revision.updated_at, format: :short %></td>
+          <td><%= time_tag revision.created_at, format: :short %></td>
           <td>
             <% if revision.autosave? %>
               <span class="label label-default">autosave</span>

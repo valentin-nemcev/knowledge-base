@@ -1,5 +1,5 @@
 <h1>Cards</h1>
 <%= link_to @article.title_html, article_path(@article) %>
-<div class="text">
+<div class="text-column">
   <%= render partial: 'card', collection: @cards %>
 </div>

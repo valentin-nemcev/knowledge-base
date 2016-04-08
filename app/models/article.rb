@@ -79,8 +79,6 @@ class Article < ActiveRecord::Base
   end
 
   def cards
-    body_doc.css('[id|="card"]')
-      .flat_map{ |d| Card.build_card_group(d, self) }
+    Card.build_cards(body_doc, self)
   end
-
 end

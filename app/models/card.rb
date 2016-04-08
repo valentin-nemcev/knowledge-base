@@ -11,16 +11,18 @@ class Nokogiri::XML::Node
   end
 end
 
-class CardGroup
+class CardContext
   include Enumerable
 
-  attr_reader :element, :article_context
+  attr_reader :element, :article
   def initialize(element, article)
     @element = element
+    @article = article
   end
 
   def article_context
-    @article_context ||= element.ancestors.last.css('#context, #context + *')
+    @article_context ||=
+      element.ancestors.last.css('#context, #context + *').to_a
   end
 
   def context
@@ -38,7 +40,6 @@ class CardGroup
   end
 
   def wrap_card(card_element)
-    card_element.delete('id')
     if card_element.name != 'div'
       new_element = card_element.document.create_element('div')
       new_element.add_child(card_element)
@@ -49,10 +50,12 @@ class CardGroup
 
   def ungroup_blanks(card_element)
     card_element
-      .css('.blank-group')
+      .css('[data-blank-group]')
       .each do |el|
-        el.remove_class('blank-group')
-        el.children.add_class('blank')
+        group_id = el.remove_attribute('data-blank-group')
+        el.elements.to_enum.with_index(1) do |e, id|
+          e.set_attribute('data-blank', [group_id, id].join('/'))
+        end
       end
     card_element
   end
@@ -63,30 +66,27 @@ class CardGroup
 
   def separate_blanks(card_element)
     card_element
-      .css('.blank').to_a
-      .each{ |el| el.remove_class('blank') }
+      .css('[data-blank]').to_a
       .map do |blank_el|
         blank_el.add_class('blank')
         new_element = card_element.dup
         blank_el.remove_class('blank')
-        new_element
+        [new_element, blank_el.get_attribute('data-blank')]
       end
   end
 
   def cards
     @cards ||= separate_blanks(card_element)
-      .map.with_index do |el, i|
+      .map do |el, blank_id|
         Card.new(
-          id: [id, i].join('-'),
-          body_element: el,
-          context: context,
-          article_context: article_context
+          id: [article.id, context_id, blank_id].join('/'),
+          body_html: [*article_context, *context, el].map(&:to_html).join("\n")
         )
       end
   end
 
-  def id
-    element['id']
+  def context_id
+    element['data-context']
   end
 
   def each(&block)
@@ -101,13 +101,17 @@ end
 class Card
   include ActiveModel::Model
 
-  attr_accessor :id, :body_element, :context, :article_context
+  attr_accessor :id, :body_html
 
-  def self.build_card_group(element, article)
-    CardGroup.new(element, article)
+  def self.build_cards(element, article)
+    element.css('[data-context]').flat_map{ |d| CardContext.new(d, article) }
   end
 
   def body_html
-    body_element.to_html.html_safe
+    @body_html.html_safe
   end
+
+  # def body_html
+  #   body_doc.to_html.html_safe
+  # end
 end
