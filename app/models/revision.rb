@@ -4,6 +4,7 @@ class Revision < ActiveRecord::Base
   include ClassyEnum::ActiveRecord
   classy_enum_attr :markup_language, default: :slim
 
+  before_save :render_body_html
 
   def update_body_html
     render_body_html
@@ -12,11 +13,6 @@ class Revision < ActiveRecord::Base
 
   def body_html
     super.html_safe
-  end
-
-  def body=(body)
-    render_body_html
-    super
   end
 
   def render_body_html
