@@ -1,18 +1,6 @@
 class Article < ActiveRecord::Base
 
-  scope :without_soft_destroyed, -> { where(destroyed_at: nil) }
-
-  def soft_destroy
-    touch(:destroyed_at)
-  end
-
-  def restore
-    update_attribute(:destroyed_at, nil)
-  end
-
-  def soft_destroyed?
-    self.destroyed_at.present?
-  end
+  include SoftDestruction
 
   has_many :revisions, -> { order(:updated_at) }, dependent: :destroy
   belongs_to :current_revision, class_name: 'Revision', autosave: true
@@ -83,9 +71,15 @@ class Article < ActiveRecord::Base
   before_save :update_cards
 
   def update_cards
-    CardExtractor.extract_cards(body_doc, self).map do |path, card_html|
-        Card.find_or_initialize_by(path: path)
-          .update_attributes(article: self, body_html: card_html)
-    end
+    existing_cards = self.cards.to_set
+    updated_cards = CardExtractor.extract_cards(body_doc, self)
+      .map do |path, card_html|
+        Card.find_or_initialize_by(path: path).tap do |card|
+          card.update_attributes!(article: self, body_html: card_html)
+        end
+      end
+    updated_cards.select(&:soft_destroyed?).each(&:restore)
+
+    (existing_cards - updated_cards).each(&:soft_destroy)
   end
 end

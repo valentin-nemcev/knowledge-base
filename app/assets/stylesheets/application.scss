@@ -126,6 +126,10 @@ section.ui {
   }
 }
 
+.deleted {
+  text-decoration: line-through;
+}
+
 tr.deleted {
   td { position: relative}
 

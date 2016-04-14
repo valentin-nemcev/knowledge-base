@@ -1,5 +1,5 @@
 <div class="kb-card">
-  <%= content_tag(:em, card.id) %>
-  <%= content_tag(:em, card.path) %>
+  <%= content_tag(:em, [card.id, card.path].join(' '),
+                  class: card.soft_destroyed? ? "deleted" : "") %>
   <%= card.body_html %>
 </div>

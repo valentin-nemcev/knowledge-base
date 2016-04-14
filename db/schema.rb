@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411104625) do
+ActiveRecord::Schema.define(version: 20160414131933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,14 @@ ActiveRecord::Schema.define(version: 20160411104625) do
   add_index "articles", ["destroyed_at"], name: "index_articles_on_destroyed_at", using: :btree
 
   create_table "cards", force: :cascade do |t|
-    t.string  "path",       null: false
-    t.integer "article_id", null: false
-    t.text    "body_html",  null: false
+    t.string   "path",         null: false
+    t.integer  "article_id",   null: false
+    t.text     "body_html",    null: false
+    t.datetime "destroyed_at"
   end
 
   add_index "cards", ["article_id"], name: "index_cards_on_article_id", using: :btree
+  add_index "cards", ["destroyed_at"], name: "index_cards_on_destroyed_at", using: :btree
   add_index "cards", ["path", "article_id"], name: "index_cards_on_path_and_article_id", unique: true, using: :btree
 
   create_table "reviews", force: :cascade do |t|
