@@ -78,7 +78,14 @@ class Article < ActiveRecord::Base
     todo_count > 0 ? ["TODO: #{todo_count}"] : []
   end
 
-  def cards
-    Card.build_cards(body_doc, self)
+  has_many :cards, -> { order(:id) }, dependent: :destroy
+
+  before_save :update_cards
+
+  def update_cards
+    CardExtractor.extract_cards(body_doc, self).map do |path, card_html|
+        Card.find_or_initialize_by(path: path)
+          .update_attributes(article: self, body_html: card_html)
+    end
   end
 end
