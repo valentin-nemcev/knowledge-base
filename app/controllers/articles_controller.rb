@@ -2,7 +2,8 @@ class ArticlesController < ApplicationController
   include MarkdownHelper
 
   before_action :set_article,
-    only: [:show, :edit, :update, :update_autosave, :restore, :destroy]
+    only: [:show, :edit, :update, :update_cards,
+           :update_autosave, :restore, :destroy]
 
   def index
     @articles =
@@ -23,6 +24,14 @@ class ArticlesController < ApplicationController
 
   def edit
     render :form
+  end
+
+  def update_cards
+    @article.update_cards
+    respond_to do |format|
+      format.html { redirect_to @article, notice: :update_cards_success }
+      format.json { head :no_content }
+    end
   end
 
   def update

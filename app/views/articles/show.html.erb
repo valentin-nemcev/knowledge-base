@@ -12,6 +12,8 @@
     <section class="ui">
       <h1>Cards</h1>
       <%= link_to 'Cards list', article_cards_path(@article) %>
+      <%= button_to 'Update cards', update_cards_article_path(@article),
+        class: 'btn btn-secondary' %>
     </section>
   </div>
 </div>

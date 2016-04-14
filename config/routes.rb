@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :cards, only: [:index]
     member do
       post 'restore'
+      post 'update_cards'
       patch 'autosave', action: :update_autosave
       match via: [:patch, :put],
         constraints: lambda { |req| req.params.key?(:autosave) },

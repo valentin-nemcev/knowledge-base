@@ -14,6 +14,6 @@ module SoftDestruction
   end
 
   def soft_destroyed?
-    self.destroyed_at.present?
+    !new_record? && destroyed_at.present?
   end
 end
