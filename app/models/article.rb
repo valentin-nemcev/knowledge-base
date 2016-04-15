@@ -2,15 +2,16 @@ class Article < ActiveRecord::Base
 
   include SoftDestruction
 
-  has_many :revisions, -> { order(:updated_at) }, dependent: :destroy
-  belongs_to :current_revision, class_name: 'Revision', autosave: true
+  has_many :revisions, -> { order(:created_at) },
+     class_name: 'ArticleRevision', dependent: :destroy
+  belongs_to :current_revision, class_name: 'ArticleRevision', autosave: true
   before_destroy :unset_current_revision, prepend: true
 
   def unset_current_revision
     update_column(:current_revision_id, nil)
   end
 
-  def autosaving(autosave)
+  def save_revision(autosave:, attributes:)
     if current_revision.nil?
       self.current_revision = revisions.build(article: self, autosave: autosave)
     elsif current_revision.persisted?
@@ -19,13 +20,11 @@ class Article < ActiveRecord::Base
       end
       current_revision.autosave = autosave
     end
-    self
+    current_revision.update(attributes) && save
   end
 
   delegate :title, :markup_language, :body, :body_html,
     to: :current_revision, allow_nil: true
-
-  delegate :title=, :markup_language=, :body=, to: :current_revision
 
 
   has_many :reviews, -> { order(:reviewed_at) }, dependent: :destroy

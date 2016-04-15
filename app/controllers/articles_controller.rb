@@ -36,7 +36,7 @@ class ArticlesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @article.autosaving(false).update(article_params)
+      if @article.save_revision(autosave: false, attributes: article_params)
         format.html { redirect_to @article, notice: :update_success }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -49,7 +49,7 @@ class ArticlesController < ApplicationController
 
   def update_autosave
     respond_to do |format|
-      if @article.autosaving(true).update(article_params)
+      if @article.save_revision(autosave: true, attributes: article_params)
         format.html { redirect_to [:edit, @article]}
         format.js { render 'form.js.coffee' }
       else

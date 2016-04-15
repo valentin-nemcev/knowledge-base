@@ -1,4 +1,4 @@
-class Revision < ActiveRecord::Base
+class ArticleRevision < ActiveRecord::Base
   belongs_to :article, inverse_of: :revisions
 
   include ClassyEnum::ActiveRecord

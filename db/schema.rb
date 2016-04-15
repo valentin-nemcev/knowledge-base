@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414131933) do
+ActiveRecord::Schema.define(version: 20160415084635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "article_revisions", force: :cascade do |t|
+    t.integer  "article_id"
+    t.string   "title",                           null: false
+    t.text     "body",                            null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.boolean  "autosave",        default: false, null: false
+    t.string   "markup_language",                 null: false
+    t.string   "body_html",                       null: false
+  end
+
+  add_index "article_revisions", ["article_id"], name: "index_article_revisions_on_article_id", using: :btree
 
   create_table "articles", force: :cascade do |t|
     t.datetime "created_at",          null: false
@@ -31,6 +44,8 @@ ActiveRecord::Schema.define(version: 20160414131933) do
     t.integer  "article_id",   null: false
     t.text     "body_html",    null: false
     t.datetime "destroyed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "cards", ["article_id"], name: "index_cards_on_article_id", using: :btree
@@ -45,21 +60,8 @@ ActiveRecord::Schema.define(version: 20160414131933) do
 
   add_index "reviews", ["article_id"], name: "index_reviews_on_article_id", using: :btree
 
-  create_table "revisions", force: :cascade do |t|
-    t.integer  "article_id"
-    t.string   "title",                           null: false
-    t.text     "body",                            null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.boolean  "autosave",        default: false, null: false
-    t.string   "markup_language",                 null: false
-    t.string   "body_html",                       null: false
-  end
-
-  add_index "revisions", ["article_id"], name: "index_revisions_on_article_id", using: :btree
-
-  add_foreign_key "articles", "revisions", column: "current_revision_id"
+  add_foreign_key "article_revisions", "articles"
+  add_foreign_key "articles", "article_revisions", column: "current_revision_id"
   add_foreign_key "cards", "articles"
   add_foreign_key "reviews", "articles"
-  add_foreign_key "revisions", "articles"
 end
