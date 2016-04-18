@@ -54,7 +54,11 @@ class Article < ActiveRecord::Base
     updated_cards = CardExtractor.extract_cards(body_doc, self)
       .map do |path, card_html|
         Card.find_or_initialize_by(article: self, path: path).tap do |card|
-          card.update_attributes!(body_html: card_html)
+          card.save_revision(
+            autosave: current_revision.autosave,
+            attributes: {body_html: card_html,
+                         article_revision: current_revision}
+          )
         end
       end
     updated_cards.select(&:soft_destroyed?).each(&:restore)
