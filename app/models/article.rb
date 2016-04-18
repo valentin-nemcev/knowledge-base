@@ -96,8 +96,8 @@ class Article < ActiveRecord::Base
     existing_cards = self.cards.to_set
     updated_cards = CardExtractor.extract_cards(body_doc, self)
       .map do |path, card_html|
-        Card.find_or_initialize_by(path: path).tap do |card|
-          card.update_attributes!(article: self, body_html: card_html)
+        Card.find_or_initialize_by(article: self, path: path).tap do |card|
+          card.update_attributes!(body_html: card_html)
         end
       end
     updated_cards.select(&:soft_destroyed?).each(&:restore)

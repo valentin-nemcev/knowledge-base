@@ -15,6 +15,7 @@
   <thead>
     <th>Title</th>
     <th>Labels</th>
+    <th>Cards</th>
     <th>Reviewed</th>
     <th>Next review</th>
     <th>Updated</th>
@@ -24,6 +25,8 @@
       <tr class="<%= 'deleted' if article.soft_destroyed? %>">
         <td><%= link_to article.title_html, article %></td>
         <td><%= article.labels_html %></td>
+        <td><%= link_to pluralize(article.cards.count, 'card'),
+                article_cards_path(article) %></td>
         <td><%= article.last_reviewed_at_html %></td>
         <td><%= article.next_review_at_html %></td>
         <td><%= article.updated_at_html %></td>
