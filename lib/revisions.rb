@@ -2,11 +2,11 @@ module Revisions
   extend ActiveSupport::Concern
 
   included do
-    REVISION_CLASS_NAME = name + 'Revision'
-    RevisionClass = REVISION_CLASS_NAME.constantize
+    revision_class_name = name + 'Revision'
+    const_set :RevisionClass, revision_class_name.constantize
 
     has_many :revisions, -> { order(:created_at) },
-      class_name: REVISION_CLASS_NAME,
+      class_name: revision_class_name,
       dependent: :destroy,
       inverse_of: name.underscore.to_sym do
         def add_without_saving(record)
@@ -21,7 +21,7 @@ module Revisions
         end
       end
     belongs_to :current_revision,
-      class_name: REVISION_CLASS_NAME, autosave: true
+      class_name: revision_class_name, autosave: true
     before_destroy :unset_current_revision, prepend: true
   end
 
@@ -30,7 +30,7 @@ module Revisions
   end
 
   def save_revision(autosave:, attributes:)
-    new_revision = RevisionClass.new(attributes)
+    new_revision = self.class::RevisionClass.new(attributes)
 
     if new_revision.different_from?(current_revision)
       self.current_revision = new_revision
