@@ -57,7 +57,8 @@ body {
   }
 
   .todo {
-    @extend mark;
+    padding: .2em;
+    background-color: #fcf8e3;
   }
 
   a[rel~="source"]:after {

@@ -6,10 +6,9 @@ class ArticleRevision < ActiveRecord::Base
 
   before_save :ensure_body_html_attr
 
-  REVISION_ATTRIBUTES = %w{title body body_html markup_language}
-  def different_from?(other)
-    other.nil? ||
-      other.slice(*REVISION_ATTRIBUTES) != self.slice(*REVISION_ATTRIBUTES)
+  include Revisions::Revision
+  def revision_attributes
+    %w{title body body_html markup_language}
   end
 
   def update_body_html

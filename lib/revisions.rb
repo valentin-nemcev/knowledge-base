@@ -30,11 +30,15 @@ module Revisions
   end
 
   def save_revision(autosave:, attributes:)
-    new_revision = self.class::RevisionClass.new(attributes)
+    if current_revision.autosave?
+      current_revision.update(attributes)
+    else
+      new_revision = self.class::RevisionClass.new(attributes)
 
-    if new_revision.different_from?(current_revision)
-      self.current_revision = new_revision
-      self.revisions.add_without_saving(new_revision)
+      if new_revision.different_from?(current_revision)
+        self.current_revision = new_revision
+        self.revisions.add_without_saving(new_revision)
+      end
     end
 
     if current_revision.new_record? || autosave == false
@@ -48,6 +52,24 @@ module Revisions
     revisions.duplicated_chunks.each do |first, *rest|
       update!(current_revision: first) if current_revision.in? rest
       rest.each(&:destroy!)
+    end
+  end
+
+  module Revision
+    def different_from?(other)
+      other.nil? ||
+        other.slice(*revision_attributes) != self.slice(*revision_attributes)
+    end
+
+    # e.g. ArticleRevision#article, CardRevision#card, etc
+    def revision_parent
+      association(self.class.reflections
+                    .find{ |name, r| r.inverse_of.name == :revisions }
+                    .first).reader
+    end
+
+    def current_revision?
+      revision_parent.current_revision == self
     end
   end
 end
