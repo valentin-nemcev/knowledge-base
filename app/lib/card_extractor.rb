@@ -13,8 +13,20 @@ end
 
 module CardExtractor
 
+  def self.ungroup(type, card_element)
+    card_element
+      .css("[data-#{type}-group]")
+      .each do |el|
+        group_id = el.remove_attribute("data-#{type}-group")
+        el.elements.to_enum.with_index(1) do |e, id|
+          e.set_attribute("data-#{type}", [group_id, id].join('/'))
+        end
+      end
+    card_element
+  end
+
   def self.extract_cards(element, article)
-    element.css('[data-context]').flat_map do |d|
+    ungroup('context', element.dup).css('[data-context]').flat_map do |d|
       CardContext.new(d, article)
     end
   end
@@ -56,20 +68,8 @@ module CardExtractor
       card_element
     end
 
-    def ungroup_blanks(card_element)
-      card_element
-        .css('[data-blank-group]')
-        .each do |el|
-          group_id = el.remove_attribute('data-blank-group')
-          el.elements.to_enum.with_index(1) do |e, id|
-            e.set_attribute('data-blank', [group_id, id].join('/'))
-          end
-        end
-      card_element
-    end
-
     def card_element
-      @card_element ||= ungroup_blanks(wrap_card(element.dup))
+      @card_element ||= CardExtractor.ungroup('blank', wrap_card(element.dup))
     end
 
     def separate_blanks(card_element)
