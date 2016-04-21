@@ -16,6 +16,16 @@ class ArticleRevision < ActiveRecord::Base
     save
   end
 
+  def body=(*args)
+    self.body_html = nil
+    super
+  end
+
+  def markup_language=(*args)
+    self.body_html = nil
+    super
+  end
+
   def body_html
     ensure_body_html_attr
     super.html_safe

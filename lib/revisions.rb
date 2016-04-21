@@ -30,7 +30,7 @@ module Revisions
   end
 
   def save_revision(autosave:, attributes:)
-    if current_revision.autosave?
+    if current_revision.try!(:autosave?)
       current_revision.update(attributes)
     else
       new_revision = self.class::RevisionClass.new(attributes)
