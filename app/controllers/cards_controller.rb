@@ -1,13 +1,14 @@
 class CardsController < ApplicationController
-  before_action :set_article
 
   def index
-    @cards = @article.cards
+    @cards = Card.all
+    @cards = @cards.where(article: article) if article.present?
+    @cards = @cards.decorate
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_article
-      @article = Article.find(params[:article_id]).decorate
+
+    def article
+      @article ||= Article.find_by_id(params[:article_id]).try!(:decorate)
     end
 end
