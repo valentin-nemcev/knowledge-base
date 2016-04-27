@@ -1,6 +1,18 @@
-<div class="kb-card">
+<% review = 'review' if current_page?(review_card_path(card)) %>
+<%= content_tag :div, class: ['kb-card', review] do %>
   <%= link_to card.article.title_html, article_path(card.article) %>
   <%= content_tag(:em, [card.id, card.path].join(' '),
                   class: card.soft_destroyed? ? "deleted" : "") %>
+  <% unless current_page?(review_card_path(card)) %>
+    <%= link_to 'Review', review_card_path(card) %>
+  <% end %>
+
   <%= card.body_html %>
-</div>
+  <% if review %>
+    <div>
+      <%= content_tag :button, 'Toggle blanks',
+        class: %w{btn btn-primary},
+        data: {click_triggers: 'toggleBlanks'} %>
+    </div>
+  <% end %>
+<% end %>
