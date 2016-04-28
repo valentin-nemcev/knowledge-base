@@ -8,7 +8,6 @@
     <%= render 'flash_messages' %>
 
     <%= render "revisions", show_actions: true %>
-    <%= render "reviews" %>
     <section class="ui">
       <h1>Cards</h1>
       <%= link_to pluralize(@article.cards.count, 'card'),

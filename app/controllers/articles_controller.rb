@@ -8,10 +8,10 @@ class ArticlesController < ApplicationController
   def index
     @articles =
       (params[:with_deleted] ? Article : Article.without_soft_destroyed)
-        .includes(:current_revision, :reviews)
+        .includes(:current_revision)
+        .order('updated_at DESC')
         .all
         .decorate
-        .sort_by(&:next_review_at_for_sort)
   end
 
   def show
@@ -83,7 +83,7 @@ class ArticlesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article
-        .includes(:revisions, :reviews)
+        .includes(:revisions)
         .find(params[:id])
         .decorate
     end

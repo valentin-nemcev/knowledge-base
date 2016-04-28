@@ -3,13 +3,13 @@ Rails.application.routes.draw do
   root to: redirect('/articles')
 
   resources :cards, only: [:index] do
+    resources :reviews, only: [:create, :destroy]
     member do
       get 'review'
     end
   end
 
   resources :articles, except: :create do
-    resources :reviews, only: [:create, :destroy]
     resources :cards, only: [:index]
     member do
       post 'restore'

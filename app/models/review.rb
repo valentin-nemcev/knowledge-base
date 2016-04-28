@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  belongs_to :article
+  belongs_to :card
 
 
   before_create :set_default_reviewed_at
@@ -9,32 +9,20 @@ class Review < ActiveRecord::Base
     true
   end
 
-  validates :response_quality,
-    inclusion: { in: (0..5),
-                 message: "%{value} must be integer in [0, 5]" }
+  # https://www.supermemo.com/english/ol/sm2.htm
+  # http://ankisrs.net/docs/manual.html#what-spaced-repetition-algorithm-does-anki-use
 
-  RESPONSE_RATINGS = Hash[[
-    [5, "Easy"],
-    [4, "Good"],
-    [3, "Hard"],
-    [2, "Again"],
-    # [1, "incorrect response; the correct one remembered"],
-    # [0, "complete blackout"],
-  ]]
+  include ClassyEnum::ActiveRecord
+  classy_enum_attr :grade, class_name: 'ReviewGrade'
 
-
-  def update_prev_reviews(prev)
-    @prev_reviews = prev
-  end
 
   def prev_reviews
-    article.update_prev_reviews(self) if @prev_reviews.nil?
-    @prev_reviews
+    card.reviews.take_while { |review| review != self }
   end
 
   def next_interval
     return nil unless valid?
-    if prev_reviews.empty? || response_quality < 3
+    if prev_reviews.empty? || grade.again?
       1.day
     elsif last_interval < 6.days
       6.days
@@ -54,7 +42,7 @@ class Review < ActiveRecord::Base
   def e_factor
     return nil unless valid?
     prev_reviews.reduce(2.5) do |ef, review|
-      q = review.response_quality
+      q = review.grade.number
       return ef if q.nil?
       ef = ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
       [ef, 1.3].max

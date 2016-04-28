@@ -28,6 +28,8 @@ guard :rspec, cmd: "bin/rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
+  notification :off
+
   # Feel free to open issues for suggestions and improvements
 
   # RSpec files

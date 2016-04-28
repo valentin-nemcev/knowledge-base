@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418124055) do
+ActiveRecord::Schema.define(version: 20160428103530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,12 +66,12 @@ ActiveRecord::Schema.define(version: 20160418124055) do
   add_index "cards", ["path", "article_id"], name: "index_cards_on_path_and_article_id", unique: true, using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.datetime "reviewed_at",      null: false
-    t.integer  "article_id"
-    t.integer  "response_quality"
+    t.datetime "reviewed_at", null: false
+    t.integer  "card_id",     null: false
+    t.string   "grade",       null: false
   end
 
-  add_index "reviews", ["article_id"], name: "index_reviews_on_article_id", using: :btree
+  add_index "reviews", ["card_id"], name: "index_reviews_on_card_id", using: :btree
 
   add_foreign_key "article_revisions", "articles"
   add_foreign_key "articles", "article_revisions", column: "current_revision_id"
@@ -79,5 +79,5 @@ ActiveRecord::Schema.define(version: 20160418124055) do
   add_foreign_key "card_revisions", "cards"
   add_foreign_key "cards", "articles"
   add_foreign_key "cards", "card_revisions", column: "current_revision_id"
-  add_foreign_key "reviews", "articles"
+  add_foreign_key "reviews", "cards"
 end

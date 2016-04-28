@@ -1,4 +1,4 @@
-<% reviews = @article.reviews %>
+<% reviews = @card.reviews %>
 <section class="ui">
   <h1>Reviews</h1>
   <table class="table table-sm">
@@ -6,18 +6,18 @@
       <% reviews.each do |review| %>
         <tr>
           <td><%= time_tag review.reviewed_at, format: :short %></td>
-          <td><%= review.response_quality_html %></td>
+          <td><%= review.grade_html %></td>
           <td width="1em">
-            <%= button_to '×', [@article, review],
+            <%= button_to '×', [@card, review],
               method: :delete,
               class: 'btn btn-sm btn-danger-outline',
               data: {confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>
-      <% if @article.next_review_at.present? %>
+      <% if @card.next_review_at.present? %>
         <tr class="no-data">
-          <td><%= time_tag @article.next_review_at, format: :short %></td>
+          <td><%= time_tag @card.next_review_at, format: :short %></td>
           <td>Next</td>
           <td></td>
         </tr>
@@ -28,14 +28,11 @@
       </tr>
     <% end %>
   </table>
-  <%= form_for([@article, Review.new],
+  <%= form_for([@card, Review.new],
                html: {class: 'form-inline'}) do |f| %>
     <fieldset class="form-group">
-      <%= f.select :response_quality,
-        Review::RESPONSE_RATINGS.to_a.map(&:reverse),
-        {},
-        class: 'form-control'
-      %>
+      <%= f.select :grade, ReviewGrade.select_options, {},
+        class: 'form-control' %>
     </fieldset>
     <fieldset class="form-group">
       <%= f.submit 'Review', class: 'btn btn-secondary' %>
