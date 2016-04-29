@@ -2,11 +2,8 @@ Rails.application.routes.draw do
 
   root to: redirect('/articles')
 
-  resources :cards, only: [:index] do
+  resources :cards, only: [:index, :show] do
     resources :reviews, only: [:create, :destroy]
-    member do
-      get 'review'
-    end
   end
 
   resources :articles, except: :create do

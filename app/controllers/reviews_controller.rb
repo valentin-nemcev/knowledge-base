@@ -14,7 +14,9 @@ class ReviewsController < ApplicationController
   def destroy
     @card.reviews.find(params[:id]).destroy
     respond_to do |format|
-      format.html { redirect_to review_card_path(@card), notice: :review_destroy_success }
+      format.html {
+        redirect_to review_card_path(@card), notice: :review_destroy_success
+      }
       format.json { head :no_content }
     end
   end

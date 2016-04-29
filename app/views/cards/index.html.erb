@@ -1,4 +1,23 @@
 <h1>Cards</h1>
-<div class="text-column">
-  <%= render partial: 'card', collection: @cards %>
-</div>
+
+<table class="table">
+  <thead>
+    <th>Path</th>
+    <th>Article</th>
+    <th>Updated</th>
+    <th>Review</th>
+  </thead>
+  <tbody>
+    <% @cards.each do |card| %>
+      <tr class="<%= 'deleted' if card.soft_destroyed? %>">
+        <td><%= link_to card.path, card %></td>
+        <td><%= link_to card.article.title_html,
+            article_path(card.article) %>
+        </td>
+        <td><%= card.updated_at_html %></td>
+        <td><%= card.next_review_at_html %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

@@ -6,7 +6,7 @@ class CardsController < ApplicationController
     @cards = @cards.decorate
   end
 
-  def review
+  def show
     @card = Card.find(params[:id]).decorate
   end
 
