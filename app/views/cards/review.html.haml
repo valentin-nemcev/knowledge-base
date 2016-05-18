@@ -1,0 +1,19 @@
+.row
+  .col-md-12.kb-card.review{'data-conceal-blanks': 'true'}
+    %h1= @card.article.title_html
+    .text-column
+      = @card.body_html
+    %div
+      = form_tag(card_reviews_path(@card)) do
+        = content_tag :button, 'Show answer',
+          name: 'show-answer',
+          class: %w{btn btn-primary}
+        .btn-group{name: 'review-grades'}
+          - ReviewGrade.each do |review|
+            = button_tag review.text,
+              name: 'review[grade]',
+              value: review.to_s,
+              class: %w{btn btn-secondary}
+
+        .pull-xs-right
+          = link_to 'Show card', params.except(:review)

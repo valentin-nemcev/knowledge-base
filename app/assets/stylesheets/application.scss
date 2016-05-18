@@ -114,6 +114,10 @@ body {
   display: inline;
 }
 
+.large {
+  font-size: $font-size-lg;
+}
+
 
 section.ui {
   @extend .form-group;

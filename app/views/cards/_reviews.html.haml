@@ -8,10 +8,10 @@
           %td= time_tag review.reviewed_at, format: :short
           %td= review.grade_html
           %td{:width => "1em"}
-            = button_to '×', [@card, review],         |
-              method: :delete,                        |
-              class: 'btn btn-sm btn-danger-outline', |
-              data: {confirm: 'Are you sure?' }       |
+            = button_to '×', [@card, review],
+              method: :delete,
+              class: 'btn btn-sm btn-danger-outline',
+              data: {confirm: 'Are you sure?' }
       - if @card.next_review_at.present?
         %tr.no-data
           %td= time_tag @card.next_review_at, format: :short
@@ -20,10 +20,10 @@
     - else
       %tr
         %td.no-data (No reviews)
-  = form_for([@card, Review.new],        |
-    html: {class: 'form-inline'}) do |f| |
+  = form_for([@card, Review.new],
+    html: {class: 'form-inline'}) do |f|
     %fieldset.form-group
-      = f.select :grade, ReviewGrade.select_options, {}, |
-        class: 'form-control'                            |
+      = f.select :grade, ReviewGrade.select_options, {},
+        class: 'form-control form-control-sm'
     %fieldset.form-group
-      = f.submit 'Review', class: 'btn btn-secondary'
+      = f.submit 'Save review', class: 'btn btn-secondary btn-sm'

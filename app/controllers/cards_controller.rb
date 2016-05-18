@@ -8,6 +8,12 @@ class CardsController < ApplicationController
 
   def show
     @card = Card.find(params[:id]).decorate
+
+    if params[:review]
+      render 'review'
+    else
+      render 'show'
+    end
   end
 
   private

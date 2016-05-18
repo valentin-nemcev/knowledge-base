@@ -4,12 +4,11 @@
     .text-column
       = content_tag :div, class: ['kb-card', 'review'] do
         = link_to @card.article.title_html, article_path(@card.article)
-        = content_tag(:em, [@card.id, @card.path].join(' '), |
-          class: @card.soft_destroyed? ? "deleted" : "")     |
+        = content_tag(:em, [@card.id, @card.path].join(' '),
+          class: @card.soft_destroyed? ? "deleted" : "")
         = @card.body_html
-        %div
-          = content_tag :button, 'Toggle blanks',  |
-            class: %w{btn btn-primary},            |
-            data: {click_triggers: 'toggleBlanks'} |
   .col-md-5
-    = render "reviews"
+    = render 'reviews'
+
+    %section.ui.large
+      = link_to 'Review card', params.merge(:review => true)
