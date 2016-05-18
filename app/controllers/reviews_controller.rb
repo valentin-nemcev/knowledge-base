@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
     @review = @card.reviews.create!(review_params)
     respond_to do |format|
       format.html {
-        redirect_to review_card_path(@card), notice: :review_create_success
+        redirect_to card_path(@card), notice: :review_create_success
       }
       format.json { head :no_content }
     end
@@ -15,7 +15,7 @@ class ReviewsController < ApplicationController
     @card.reviews.find(params[:id]).destroy
     respond_to do |format|
       format.html {
-        redirect_to review_card_path(@card), notice: :review_destroy_success
+        redirect_to card_path(@card), notice: :review_destroy_success
       }
       format.json { head :no_content }
     end
