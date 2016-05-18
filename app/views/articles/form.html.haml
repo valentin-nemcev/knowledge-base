@@ -1,0 +1,23 @@
+.row
+  .col-lg-5
+    .text-column.article-preview
+      = render 'article_contents'
+  %section.ui.col-lg-5
+    %h1 Edit article
+    = form_for(@article, html: {class: 'text-column'}) do |f|
+      %fieldset.form-group
+        = f.label :title, class: 'sr-only'
+        = f.text_field :title, placeholder: 'Title', |
+          class: 'form-control form-control-lg'      |
+      %fieldset.form-group
+        = f.text_area :body, class: 'form-control', rows: 30
+      %fieldset.form-group
+        = f.select :markup_language, MarkupLanguage.select_options, |
+          {}, class: 'form-control'                                 |
+      %fieldset.form-group.clearfix
+        = f.submit 'Save', class: 'btn btn-primary'
+        = f.submit 'Autosave', name: 'autosave', |
+          class: 'btn btn-secondary'             |
+        = link_to 'Back', @article, class: 'btn btn-link'
+  .col-lg-2
+    = render "revisions"

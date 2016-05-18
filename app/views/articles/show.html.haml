@@ -1,0 +1,13 @@
+.row
+  .col-md-7
+    .text-column
+      = render 'article_contents'
+  .col-md-5
+    = render 'flash_messages'
+    = render "revisions", show_actions: true
+    %section.ui
+      %h1 Cards
+      = link_to pluralize(@article.cards.count, 'card'), |
+        article_cards_path(@article)                     |
+      = button_to 'Update cards', update_cards_article_path(@article), |
+        class: 'btn btn-secondary'                                     |

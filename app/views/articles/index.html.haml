@@ -1,0 +1,23 @@
+.clearfix
+  %h1.pull-xs-left Articles
+  - link = if params[:with_deleted]
+    - ["Without deleted", articles_path]
+  - else
+    - ["With deleted", articles_path(:with_deleted => true)]
+  = link_to(*link, class: 'pull-xs-right')
+= render 'flash_messages'
+%table.table
+  %thead
+    %th Title
+    %th Labels
+    %th Cards
+    %th Updated
+  %tbody
+    - @articles.each do |article|
+      %tr{:class => "#{'deleted' if article.soft_destroyed?}"}
+        %td= link_to article.title_html, article
+        %td= article.labels_html
+        %td= link_to pluralize(article.cards.count, 'card'), |
+            article_cards_path(article)                     |
+        %td= article.updated_at_html
+= link_to 'New Article', new_article_path, {class: 'btn btn-primary'}

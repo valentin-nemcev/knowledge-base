@@ -1,0 +1,26 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+    %meta{:content => "ie=edge", "http-equiv" => "x-ua-compatible"}/
+
+    %title Knowledge Base
+
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
+    = csrf_meta_tags
+
+  %body
+    %nav.navbar.navbar-full.m-b-1.navbar-light.bg-faded
+      %span.navbar-brand KB
+      .nav.navbar-nav
+        = nav_link('Articles', '/articles')
+        = nav_link('Cards', '/cards')
+        = nav_link('Markup reference',                   |
+          'http://kramdown.gettalong.org/quickref.html', |
+          class: 'pull-xs-right')                        |
+    .container-fluid
+      = yield

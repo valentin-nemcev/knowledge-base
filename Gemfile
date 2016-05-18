@@ -26,6 +26,10 @@ gem 'kramdown', '~> 1.9'
 gem 'slim', '~> 3.0'
 
 
+# View templates
+gem "haml-rails", "~> 0.9"
+
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

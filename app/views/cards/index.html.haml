@@ -1,0 +1,18 @@
+%h1 Cards
+%table.table
+  %thead
+    %th Path
+    %th Card
+    %th Article
+    %th Updated
+    %th Review
+  %tbody
+    - @cards.each do |card|
+      %tr{:class => "#{'deleted' if card.soft_destroyed?}"}
+        %td= link_to card.path, card
+        %td= link_to card.blank, card
+        %td
+          = link_to card.article.title_html, |
+            article_path(card.article)       |
+        %td= card.updated_at_html
+        %td= card.next_review_at_html
