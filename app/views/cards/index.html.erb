@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <th>Path</th>
+    <th>Card</th>
     <th>Article</th>
     <th>Updated</th>
     <th>Review</th>
@@ -11,6 +12,7 @@
     <% @cards.each do |card| %>
       <tr class="<%= 'deleted' if card.soft_destroyed? %>">
         <td><%= link_to card.path, card %></td>
+        <td><%= link_to card.blank, card %></td>
         <td><%= link_to card.article.title_html,
             article_path(card.article) %>
         </td>

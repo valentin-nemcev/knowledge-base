@@ -4,6 +4,10 @@ class CardDecorator < Draper::Decorator
   decorates_association :article
   decorates_association :reviews
 
+  def blank
+    h.truncate(object.blank_element.text, length: 50)
+  end
+
   def last_reviewed_at_html
     h.time_in_words_html(last_reviewed_at)
   end

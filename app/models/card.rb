@@ -21,4 +21,13 @@ class Card < ActiveRecord::Base
   def next_review_at_for_sort
     next_review_at || Time.zone.at(0)
   end
+
+
+  def body_doc
+    @body_doc ||= Nokogiri::HTML.fragment(body_html)
+  end
+
+  def blank_element
+    body_doc.css('.blank')
+  end
 end
