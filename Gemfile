@@ -27,7 +27,7 @@ gem 'slim', '~> 3.0'
 
 
 # View templates
-gem "haml-rails", "~> 0.9"
+gem 'haml-rails', '~> 0.9'
 
 
 # Use SCSS for stylesheets
@@ -66,6 +66,9 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'guard-rspec', '~> 4.6'
   gem 'spring-commands-rspec', '~> 1.0'
+
+  gem 'guard-livereload', '~> 2.5', require: false
+  gem 'rack-livereload'
 end
 
 group :development do
