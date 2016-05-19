@@ -63,6 +63,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
+  gem 'active_record_query_trace'
+
   gem 'rspec-rails', '~> 3.0'
   gem 'guard-rspec', '~> 4.6'
   gem 'spring-commands-rspec', '~> 1.0'

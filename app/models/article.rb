@@ -17,7 +17,9 @@ class Article < ActiveRecord::Base
   end
 
 
-  has_many :cards, -> { includes(:article).order(:id) }, dependent: :destroy do
+  has_many :cards, -> { includes(:article, :current_revision, :reviews) },
+    autosave: true,
+    dependent: :destroy do
     def article
       proxy_association.owner
     end
@@ -44,14 +46,12 @@ class Article < ActiveRecord::Base
   end
 
 
-  before_save :update_cards
-
   def update_cards
     existing_cards = self.cards.to_set
     updated_cards = CardExtractor.extract_cards(body_doc, self)
       .map do |path, card_html|
-        Card.find_or_initialize_by(article: self, path: path).tap do |card|
-          card.save_revision(
+        cards.find_or_initialize_by(path: path).tap do |card|
+          card.update_revision(
             autosave: current_revision.autosave,
             attributes: {body_html: card_html,
                          article_revision: current_revision}

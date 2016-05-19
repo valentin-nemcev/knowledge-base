@@ -21,6 +21,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_record_query_trace (1.5.3)
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -351,6 +352,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record_query_trace
   awesome_print
   berkshelf
   bootstrap (~> 4.0.0.alpha3)

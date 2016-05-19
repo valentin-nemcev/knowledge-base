@@ -7,7 +7,7 @@
     = render "revisions", show_actions: true
     %section.ui
       %h1 Cards
-      = link_to pluralize(@article.cards.count, 'card'),
+      = link_to pluralize(@article.card_count, 'card'),
         article_cards_path(@article),
         class: 'large'
 

@@ -29,7 +29,7 @@ module Revisions
     update_column(:current_revision_id, nil)
   end
 
-  def save_revision(autosave:, attributes:)
+  def update_revision(autosave:, attributes:)
     if current_revision.try!(:autosave?)
       current_revision.update(attributes)
     else
@@ -45,7 +45,7 @@ module Revisions
       current_revision.autosave = autosave
     end
 
-    save
+    self
   end
 
   def destroy_duplicated_revisions
