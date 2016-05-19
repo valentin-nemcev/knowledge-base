@@ -3,7 +3,7 @@ class Article < ActiveRecord::Base
   include SoftDestruction
   include Revisions
 
-  delegate :title, :markup_language, :body, :body_html,
+  delegate :card_ordering, :title, :markup_language, :body, :body_html,
     to: :current_revision, allow_nil: true
 
 
@@ -16,7 +16,33 @@ class Article < ActiveRecord::Base
     todo_count > 0 ? ["TODO: #{todo_count}"] : []
   end
 
-  has_many :cards, -> { order(:id) }, dependent: :destroy
+
+  has_many :cards, -> { includes(:article).order(:id) }, dependent: :destroy do
+    def article
+      proxy_association.owner
+    end
+
+    def sort_by_article_position
+      index = article.card_ordering_index
+      sort_by do |card|
+        [
+          index.key?(card.path) ? 0 : 1,
+          index.fetch(card.path, 0),
+          card.path_for_sort
+        ]
+      end
+    end
+  end
+
+  def card_ordering_index
+    @card_ordering_index ||=
+      card_ordering.map.with_index.to_h
+  end
+
+  def card_count
+    card_ordering.count
+  end
+
 
   before_save :update_cards
 
@@ -35,5 +61,10 @@ class Article < ActiveRecord::Base
     updated_cards.select(&:soft_destroyed?).each(&:restore)
 
     (existing_cards - updated_cards).each(&:soft_destroy)
+
+    self.current_revision
+      .update_attribute(:card_ordering, updated_cards.map(&:path).to_a)
+
+    self
   end
 end

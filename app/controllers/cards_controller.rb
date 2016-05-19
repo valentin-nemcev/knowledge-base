@@ -1,9 +1,12 @@
 class CardsController < ApplicationController
 
   def index
-    @cards = Card.all
-    @cards = @cards.where(article: article) if article.present?
-    @cards = @cards.decorate
+    @cards = if article.present?
+               article.cards.sort_by_article_position
+             else
+               Card.all
+             end
+    @cards = CardDecorator.decorate_collection(@cards)
   end
 
   def show

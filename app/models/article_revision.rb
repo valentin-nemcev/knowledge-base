@@ -1,6 +1,8 @@
 class ArticleRevision < ActiveRecord::Base
   belongs_to :article, inverse_of: :revisions
 
+  serialize :card_ordering, Array
+
   include ClassyEnum::ActiveRecord
   classy_enum_attr :markup_language, default: :slim
 

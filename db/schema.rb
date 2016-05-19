@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428103530) do
+ActiveRecord::Schema.define(version: 20160519093647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20160428103530) do
     t.boolean  "autosave",        default: false, null: false
     t.string   "markup_language",                 null: false
     t.text     "body_html",                       null: false
+    t.string   "card_ordering"
   end
 
   add_index "article_revisions", ["article_id"], name: "index_article_revisions_on_article_id", using: :btree

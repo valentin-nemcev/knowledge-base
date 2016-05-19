@@ -11,8 +11,6 @@
       %tr{:class => "#{'deleted' if card.soft_destroyed?}"}
         %td= link_to card.path, card
         %td= link_to card.blank, card
-        %td
-          = link_to card.article.title_html, |
-            article_path(card.article)       |
+        %td= link_to card.article.title_html, article_path(card.article)
         %td= card.updated_at_html
         %td= card.next_review_at_html

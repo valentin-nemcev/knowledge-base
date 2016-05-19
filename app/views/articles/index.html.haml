@@ -17,7 +17,7 @@
       %tr{:class => "#{'deleted' if article.soft_destroyed?}"}
         %td= link_to article.title_html, article
         %td= article.labels_html
-        %td= link_to pluralize(article.cards.count, 'card'), |
-            article_cards_path(article)                     |
+        %td= link_to pluralize(article.card_count, 'card'),
+            article_cards_path(article)
         %td= article.updated_at_html
 = link_to 'New Article', new_article_path, {class: 'btn btn-primary'}
