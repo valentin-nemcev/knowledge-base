@@ -3,11 +3,11 @@ class CardRevision < ActiveRecord::Base
   belongs_to :article_revision
 
 
-  REVISION_ATTRIBUTES = %w{article_revision body_html}
-  def different_from?(other)
-    other.nil? ||
-      other.slice(*REVISION_ATTRIBUTES) != self.slice(*REVISION_ATTRIBUTES)
+  include Revisions::Revision
+  def revision_attributes
+    %w{body_html}
   end
+
 
   def body_html
     super.html_safe

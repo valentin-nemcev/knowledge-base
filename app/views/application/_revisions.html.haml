@@ -1,0 +1,37 @@
+- revisions = model.revisions
+%section.ui.clearfix.article-revisions
+  %h1 Revisions
+  %table.table.table-sm
+    - if revisions.present?
+      - revisions.each do |revision|
+        %tr
+          %td= time_tag revision.updated_at, format: :short
+          %td
+            - if revision.autosave?
+              %span.label.label-default autosave
+    - else
+      %tr
+        %td.no-data (No revisions)
+    - if model.destroyed_at.present?
+      %tr.no-data
+        %td= time_tag model.destroyed_at, format: :short
+        %td
+          %span.label.label-default deleted
+  - show_actions ||= false
+  - if show_actions
+    - if !model.soft_destroyed?
+      = link_to 'Edit', edit_article_path(model),
+        class: 'btn btn-secondary'
+    - else
+      = button_to 'Restore', restore_article_path(model),
+        class: 'btn btn-secondary', form_class: 'inline'
+    - if !model.soft_destroyed? && model.revisions.present?
+      = button_to 'Delete article', article_path(model),
+        method: :delete,
+        class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+        data: {confirm: 'Are you sure?' }
+    - else
+      = button_to 'Delete forever', article_path(model, forever: true),
+        method: :delete,
+        class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+        data: {confirm: 'Are you sure?' }
