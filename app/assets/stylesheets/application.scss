@@ -138,6 +138,15 @@ section.ui {
   ol, ul {
     padding-left: 0;
   }
+
+  section, .section {
+    margin-top: $spacer-y/2;
+    margin-bottom: $spacer-y/2;
+  }
+
+  .caption {
+    @extend .text-muted;
+  }
 }
 
 .deleted {

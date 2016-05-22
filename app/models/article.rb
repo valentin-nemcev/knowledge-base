@@ -46,6 +46,22 @@ class Article < ActiveRecord::Base
   end
 
 
+  def card_index(card)
+    card_ordering_index[card.path]
+  end
+
+  {'next' => +1, 'prev' => -1}.each do |name, delta|
+    define_method "card_#{name}_to" do |card|
+      index = card_index(card)
+      index.present? or return nil
+      index += delta
+      index.in?(0...card_ordering.length) or return nil
+      path = card_ordering[index]
+      cards.find{ |c| c.path == path }
+    end
+  end
+
+
   def update_cards
     existing_cards = self.cards.to_set
     updated_cards = CardExtractor.extract_cards(body_doc, self)

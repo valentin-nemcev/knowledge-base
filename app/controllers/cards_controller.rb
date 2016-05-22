@@ -9,6 +9,7 @@ class CardsController < ApplicationController
     @cards = CardDecorator.decorate_collection(@cards)
   end
 
+
   def show
     @card = Card.find(params[:id]).decorate
 

@@ -3,9 +3,6 @@
     %h1 Card
     .text-column
       = content_tag :div, class: ['kb-card', 'review'] do
-        = link_to @card.article.title_html, article_path(@card.article)
-        = content_tag(:em, [@card.id, @card.path].join(' '),
-          class: @card.soft_destroyed? ? "deleted" : "")
         = @card.body_html
   .col-md-5
     %section.ui.clearfix
@@ -16,7 +13,28 @@
 
     %section.ui.large
       = link_to 'Review card', params.merge(:review => true)
+
     %section.ui
-      = link_to 'Next card', 'next'
-      %br
-      = link_to 'Prev card', 'prev'
+      %h1 Article cards
+      - article = @card.article
+
+      %section.row
+        .col-sm-3.caption Article
+        .col-sm-9= link_to article.title_html, article_path(article)
+
+        .col-sm-3.caption Path
+        .col-sm-9= @card.path
+
+        .col-sm-3.caption Position
+        .col-sm-9
+          = "#{article.card_index(@card) + 1} of #{article.card_count}"
+
+      %ul.nav
+        %li.nav-item
+          - prev_card = article.card_prev_to(@card)
+          = nav_link 'Prev card', prev_card
+        %li.nav-item
+          = link_to 'All cards', [article, :cards]
+        %li.nav-item
+          - next_card = article.card_next_to(@card)
+          = nav_link 'Next card', next_card
