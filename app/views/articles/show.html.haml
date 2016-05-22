@@ -4,7 +4,26 @@
       = render 'article_contents'
   .col-md-5
     = render 'flash_messages'
-    = render 'revisions', model: @article, show_actions: true
+
+    %section.ui.clearfix
+      = render 'revisions', model: @article, show_actions: true
+      - if !@article.soft_destroyed?
+        = link_to 'Edit', edit_article_path(@article),
+          class: 'btn btn-secondary'
+      - else
+        = button_to 'Restore', restore_article_path(@article),
+          class: 'btn btn-secondary', form_class: 'inline'
+      - if !@article.soft_destroyed? && @article.revisions.present?
+        = button_to 'Delete article', article_path(@article),
+          method: :delete,
+          class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+          data: {confirm: 'Are you sure?' }
+      - else
+        = button_to 'Delete forever', article_path(@article, forever: true),
+          method: :delete,
+          class: 'btn btn-danger-outline', form_class: 'pull-xs-right',
+          data: {confirm: 'Are you sure?' }
+
     %section.ui
       %h1 Cards
       = link_to pluralize(@article.card_count, 'card'),

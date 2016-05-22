@@ -8,7 +8,11 @@
           class: @card.soft_destroyed? ? "deleted" : "")
         = @card.body_html
   .col-md-5
-    = render 'reviews'
+    %section.ui.clearfix
+      = render 'revisions', model: @card
+
+    %section.ui
+      = render 'reviews'
 
     %section.ui.large
       = link_to 'Review card', params.merge(:review => true)
@@ -16,5 +20,3 @@
       = link_to 'Next card', 'next'
       %br
       = link_to 'Prev card', 'prev'
-
-    = render "revisions", model: @card, show_actions: true
