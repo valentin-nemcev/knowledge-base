@@ -4,7 +4,9 @@ class CardsController < ApplicationController
     @cards = if article.present?
                article.cards.sort_by_article_position
              else
-               Card.all
+               Card
+                .includes(:article => [:current_revision])
+                .sort_by_review_order
              end
     @cards = CardDecorator.decorate_collection(@cards)
   end

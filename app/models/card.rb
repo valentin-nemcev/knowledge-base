@@ -20,11 +20,20 @@ class Card < ActiveRecord::Base
   end
 
   def next_review_at
-    reviews.last.try!(:next_at)
+    reviews.last.try! do |review|
+      review.next_at.to_date
+    end
   end
 
-  def next_review_at_for_sort
-    next_review_at || Time.zone.at(0)
+  def self.sort_by_review_order
+    now = Time.zone.now
+    all.sort_by do |card|
+      [
+        card.soft_destroyed? ? 1 : 0,
+        card.next_review_at || now,
+        [card.next_review_at, card.path].hash,
+      ]
+    end
   end
 
 

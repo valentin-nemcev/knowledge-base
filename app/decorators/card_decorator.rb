@@ -13,7 +13,15 @@ class CardDecorator < Draper::Decorator
   end
 
   def next_review_at_html
-    h.time_in_words_html(next_review_at)
+    if next_review_at.present?
+      if next_review_at.today?
+        h.time_tag next_review_at, 'Today'
+      else
+        h.time_tag next_review_at, format: :short
+      end
+    else
+      h.content_tag(:span, '(New)', class: 'no-data')
+    end
   end
 
   def updated_at_html

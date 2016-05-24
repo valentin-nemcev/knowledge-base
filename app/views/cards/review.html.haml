@@ -15,5 +15,5 @@
               value: review.to_s,
               class: %w{btn btn-secondary}
 
-        .pull-xs-right
-          = link_to 'Show card', params.except(:review)
+        = link_to 'Show card', params.except(:review),
+            class: 'btn btn-link pull-xs-right'

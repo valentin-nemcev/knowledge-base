@@ -19,5 +19,5 @@
         = f.submit 'Autosave', name: 'autosave', |
           class: 'btn btn-secondary'             |
         = link_to 'Back', @article, class: 'btn btn-link'
-  .col-lg-2
-    = render "revisions"
+  .col-lg-2.article-revisions
+    = render 'revisions', model: @article

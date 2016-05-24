@@ -37,7 +37,8 @@ module ApplicationHelper
       title = I18n.l(from_time, :format => :long)
       content_tag(:time, content, {datetime: datetime, title: title})
     else
-      content_tag(:span, '(Never)', class: 'no-data')
+      when_nil = options.fetch(:when_nil, 'Never')
+      content_tag(:span, "(#{when_nil})", class: 'no-data')
     end
   end
 
