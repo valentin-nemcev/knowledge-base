@@ -3,22 +3,16 @@ class ReviewsController < ApplicationController
 
   def create
     @review = @card.reviews.create!(review_params)
-    respond_to do |format|
-      format.html {
-        redirect_to card_path(@card), notice: :review_create_success
-      }
-      format.json { head :no_content }
+    if params[:queue]
+      redirect_to next_card_path(@card)
+    else
+      redirect_to card_path(@card), notice: :review_create_success
     end
   end
 
   def destroy
     @card.reviews.find(params[:id]).destroy
-    respond_to do |format|
-      format.html {
-        redirect_to card_path(@card), notice: :review_destroy_success
-      }
-      format.json { head :no_content }
-    end
+    redirect_to card_path(@card), notice: :review_destroy_success
   end
 
   private

@@ -25,15 +25,26 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def review_order
+    [
+      soft_destroyed? ? 1 : 0,
+      next_review_at || Date.today,
+      [next_review_at, path].hash,
+    ]
+  end
+
+  def ready_for_review?
+    next_review_at.nil? || next_review_at.past?
+  end
+
   def self.sort_by_review_order
-    now = Time.zone.now
-    all.sort_by do |card|
-      [
-        card.soft_destroyed? ? 1 : 0,
-        card.next_review_at || now,
-        [card.next_review_at, card.path].hash,
-      ]
-    end
+    all.sort_by(&:review_order)
+  end
+
+  def self.review_queue
+    without_soft_destroyed
+      .select(&:ready_for_review?)
+      .sort_by(&:review_order)
   end
 
 

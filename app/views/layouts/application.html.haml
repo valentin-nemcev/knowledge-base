@@ -17,10 +17,11 @@
     %nav.navbar.navbar-full.m-b-1.navbar-light.bg-faded
       %span.navbar-brand KB
       .nav.navbar-nav
-        = nav_link('Articles', '/articles')
-        = nav_link('Cards', '/cards')
-        = nav_link('Markup reference',                   |
-          'http://kramdown.gettalong.org/quickref.html', |
-          class: 'pull-xs-right')                        |
+        = nav_link 'Articles', '/articles'
+        = nav_link 'Cards', '/cards'
+        = nav_link 'Review', '/cards/start_review'
+        = nav_link 'Markup reference',
+          'http://kramdown.gettalong.org/quickref.html',
+          class: 'pull-xs-right'
     .container-fluid
       = yield

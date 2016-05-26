@@ -3,8 +3,8 @@
     %h1= @card.article.title_html
     .text-column
       = @card.body_html
-    %div
-      = form_tag(card_reviews_path(@card)) do
+    .m-t-1
+      = form_tag(card_reviews_path(card_id: @card, queue: params[:queue])) do
         = content_tag :button, 'Show answer',
           name: 'show-answer',
           class: %w{btn btn-primary}
@@ -15,5 +15,9 @@
               value: review.to_s,
               class: %w{btn btn-secondary}
 
+        - if params[:queue]
+          = link_to 'Skip card',
+            next_card_path(@card),
+            class: 'btn btn-link'
         = link_to 'Show card', params.except(:review),
             class: 'btn btn-link pull-xs-right'
