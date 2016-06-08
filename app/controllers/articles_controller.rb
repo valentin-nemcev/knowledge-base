@@ -27,7 +27,7 @@ class ArticlesController < ApplicationController
   end
 
   def update_cards
-    @article.update_cards.save
+    @article.update_cards.save!
     respond_to do |format|
       format.html { redirect_to @article, notice: :update_cards_success }
       format.json { head :no_content }

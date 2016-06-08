@@ -63,10 +63,13 @@ class Article < ActiveRecord::Base
 
 
   def update_cards
-    existing_cards = self.cards.to_set
+    paths_to_cards = Hash[cards.map{ |c| [c.path, c] }]
+    paths_to_cards.default_proc = proc do |h, path|
+      h[path] = cards.build(path: path)
+    end
     updated_cards = CardExtractor.extract_cards(body_doc, self)
       .map do |path, card_html|
-        cards.find_or_initialize_by(path: path).tap do |card|
+        paths_to_cards[path].tap do |card|
           card.update_revision(
             autosave: current_revision.autosave,
             attributes: {body_html: card_html,
@@ -76,6 +79,7 @@ class Article < ActiveRecord::Base
       end
     updated_cards.select(&:soft_destroyed?).each(&:restore)
 
+    existing_cards = cards.to_set
     (existing_cards - updated_cards).each(&:soft_destroy)
 
     self.current_revision
