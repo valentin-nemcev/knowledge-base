@@ -28,4 +28,8 @@ class CardDecorator < Draper::Decorator
     h.time_in_words_html(updated_at)
   end
 
+  def e_factor_html
+    h.number_with_precision(e_factor, precision: 2)
+  end
+
 end

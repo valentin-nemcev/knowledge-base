@@ -3,6 +3,10 @@ module SoftDestruction
 
   included do
     scope :without_soft_destroyed, -> { where(destroyed_at: nil) }
+
+    scope :order_soft_destroyed_last, -> {
+      order('destroyed_at IS NULL DESC')
+    }
   end
 
   def soft_destroy

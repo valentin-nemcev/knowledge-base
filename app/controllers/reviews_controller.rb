@@ -3,6 +3,7 @@ class ReviewsController < ApplicationController
 
   def create
     @review = @card.reviews.create!(review_params)
+    @card.update_latest_review!
     if params[:queue]
       redirect_to next_card_path(@card)
     else
@@ -11,7 +12,7 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    @card.reviews.find(params[:id]).destroy
+    @card.reviews.find(params[:id]).destroy!
     redirect_to card_path(@card), notice: :review_destroy_success
   end
 

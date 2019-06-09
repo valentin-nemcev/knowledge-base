@@ -37,7 +37,8 @@ class CardsController < ApplicationController
              else
                Card
                 .includes(:article => [:current_revision])
-                .sort_by_review_order
+                .review_order
+                # .sort_by_review_order
              end
     @cards = CardDecorator.decorate_collection(@cards)
   end
