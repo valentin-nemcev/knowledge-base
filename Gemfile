@@ -21,7 +21,7 @@ end
 gem 'underscore-rails'
 
 # Markdown
-gem 'kramdown', '~> 1.9'
+gem 'kramdown', '~> 2.3'
 
 gem 'slim', '~> 3.0'
 
